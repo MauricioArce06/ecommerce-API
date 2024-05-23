@@ -16,13 +16,25 @@ let UsersService = class UsersService {
     constructor(userRepository) {
         this.userRepository = userRepository;
     }
-    async getUsers() {
-        return this.userRepository.getUser();
+    async getUsers(page, limit) {
+        return this.userRepository.getUser(page, limit);
+    }
+    async getUserById(id) {
+        return this.userRepository.getUserById(id);
+    }
+    async postUser(user) {
+        return this.userRepository.postUser(user);
+    }
+    async updateUser(id, toUpdate) {
+        return this.userRepository.updateUser(id, toUpdate);
+    }
+    async deleteUser(id) {
+        return this.userRepository.deleteUser(id);
     }
 };
 exports.UsersService = UsersService;
 exports.UsersService = UsersService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [userRepository_1.UserEntity])
+    __metadata("design:paramtypes", [userRepository_1.UserRepository])
 ], UsersService);
 //# sourceMappingURL=users.service.js.map

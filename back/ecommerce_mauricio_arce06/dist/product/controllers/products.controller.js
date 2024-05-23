@@ -8,16 +8,35 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductsController = void 0;
 const common_1 = require("@nestjs/common");
 const products_service_1 = require("../services/products.service");
+const AuthGuard_1 = require("../../auth/guard/AuthGuard");
 let ProductsController = class ProductsController {
     constructor(productsService) {
         this.productsService = productsService;
     }
     getProducts() {
         return this.productsService.getProducts();
+    }
+    getProductById(id) {
+        const idParse = Number(id);
+        return this.productsService.getProductById(idParse);
+    }
+    postProduct(product) {
+        return this.productsService.postProduct(product);
+    }
+    updateProduct(id, toUpdate) {
+        const idParseado = Number(id);
+        return this.productsService.updateProduct(idParseado, toUpdate);
+    }
+    deleteProduct(id) {
+        const idParseado = Number(id);
+        return this.productsService.deleteProduct(idParseado);
     }
 };
 exports.ProductsController = ProductsController;
@@ -27,6 +46,38 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], ProductsController.prototype, "getProducts", null);
+__decorate([
+    (0, common_1.Get)(':id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", void 0)
+], ProductsController.prototype, "getProductById", null);
+__decorate([
+    (0, common_1.Post)('post'),
+    (0, common_1.UseGuards)(AuthGuard_1.headerAuthorization),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], ProductsController.prototype, "postProduct", null);
+__decorate([
+    (0, common_1.Put)('/update/:id'),
+    (0, common_1.UseGuards)(AuthGuard_1.headerAuthorization),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", void 0)
+], ProductsController.prototype, "updateProduct", null);
+__decorate([
+    (0, common_1.Delete)(':id'),
+    (0, common_1.UseGuards)(AuthGuard_1.headerAuthorization),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], ProductsController.prototype, "deleteProduct", null);
 exports.ProductsController = ProductsController = __decorate([
     (0, common_1.Controller)('products'),
     __metadata("design:paramtypes", [products_service_1.ProductsService])

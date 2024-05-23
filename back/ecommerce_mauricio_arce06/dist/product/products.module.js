@@ -11,7 +11,13 @@ const common_1 = require("@nestjs/common");
 const products_service_1 = require("./services/products.service");
 const products_controller_1 = require("./controllers/products.controller");
 const productsRepository_1 = require("./repository/productsRepository");
+const authenticationMidd_1 = require("../middlewares/authenticationMidd");
 let ProductsModule = class ProductsModule {
+    configure(consumer) {
+        consumer
+            .apply(authenticationMidd_1.AuthenticationMiddProduct)
+            .forRoutes('products/post', 'products/update/:id');
+    }
 };
 exports.ProductsModule = ProductsModule;
 exports.ProductsModule = ProductsModule = __decorate([

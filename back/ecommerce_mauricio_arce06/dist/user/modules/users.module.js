@@ -11,14 +11,18 @@ const common_1 = require("@nestjs/common");
 const users_controller_1 = require("../controllers/users.controller");
 const users_service_1 = require("../services/users.service");
 const userRepository_1 = require("../repository/userRepository");
+const authenticationMidd_1 = require("../../middlewares/authenticationMidd");
 let UsersModule = class UsersModule {
+    configure(consumer) {
+        consumer.apply(authenticationMidd_1.AuthenticationMiddUser).forRoutes('users/register');
+    }
 };
 exports.UsersModule = UsersModule;
 exports.UsersModule = UsersModule = __decorate([
     (0, common_1.Module)({
         imports: [],
         controllers: [users_controller_1.UsersController],
-        providers: [users_service_1.UsersService, userRepository_1.UserEntity],
+        providers: [users_service_1.UsersService, userRepository_1.UserRepository],
     })
 ], UsersModule);
 //# sourceMappingURL=users.module.js.map

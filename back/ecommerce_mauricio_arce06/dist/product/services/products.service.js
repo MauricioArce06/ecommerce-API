@@ -19,6 +19,18 @@ let ProductsService = class ProductsService {
     getProducts() {
         return this.productsRepository.getProducts();
     }
+    getProductById(id) {
+        return this.productsRepository.getProductById(id);
+    }
+    postProduct(product) {
+        return this.productsRepository.postProduct(product);
+    }
+    updateProduct(id, toUpdate) {
+        return this.productsRepository.updateProduct(id, toUpdate);
+    }
+    deleteProduct(id) {
+        return this.productsRepository.deleteProduct(id);
+    }
 };
 exports.ProductsService = ProductsService;
 exports.ProductsService = ProductsService = __decorate([
