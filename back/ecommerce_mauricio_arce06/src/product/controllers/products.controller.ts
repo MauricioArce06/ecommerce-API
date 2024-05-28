@@ -11,6 +11,7 @@ import {
 import { ProductsService } from '../services/products.service';
 import { ProductDto } from '../productDto';
 import { headerAuthorization } from 'src/auth/guard/AuthGuard';
+import { Products as ProductsEntity } from '../product.entity';
 
 @Controller('products')
 export class ProductsController {
@@ -21,29 +22,31 @@ export class ProductsController {
     return this.productsService.getProducts();
   }
 
+  @Get('seeder')
+  preLoadedProducts() {
+    return this.productsService.preLoadedProducts();
+  }
+
   @Get(':id')
-  getProductById(@Param('id') id: number) {
-    const idParse = Number(id);
-    return this.productsService.getProductById(idParse);
+  getProductById(@Param('id') id: string) {
+    return this.productsService.getProductById(id);
   }
 
   @Post('post')
   @UseGuards(headerAuthorization)
-  postProduct(@Body() product: ProductDto) {
+  postProduct(@Body() product: ProductsEntity) {
     return this.productsService.postProduct(product);
   }
 
   @Put('/update/:id')
   @UseGuards(headerAuthorization)
   updateProduct(@Param('id') id: string, @Body() toUpdate: ProductDto) {
-    const idParseado = Number(id);
-    return this.productsService.updateProduct(idParseado, toUpdate);
+    return this.productsService.updateProduct(id, toUpdate);
   }
 
   @Delete(':id')
   @UseGuards(headerAuthorization)
   deleteProduct(@Param('id') id: string) {
-    const idParseado = Number(id);
-    return this.productsService.deleteProduct(idParseado);
+    return this.productsService.deleteProduct(id);
   }
 }

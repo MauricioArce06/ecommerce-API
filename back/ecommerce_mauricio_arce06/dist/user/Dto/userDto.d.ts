@@ -3,7 +3,8 @@ export interface userDto {
     password: string;
     email: string;
     adress: string;
-    phone: string;
+    phone: number;
     country: string;
     city: string;
+    orders_id: [];
 }

@@ -4,7 +4,6 @@ import {
   Delete,
   Get,
   Param,
-  Patch,
   Post,
   Put,
   Query,
@@ -35,8 +34,7 @@ export class UsersController {
   @Get(':id')
   @UseGuards(headerAuthorization)
   async getUserById(@Param('id') id: string) {
-    const idParseado = Number(id);
-    return await this.usersService.getUserById(idParseado);
+    return await this.usersService.getUserById(id);
   }
 
   @Post('register')
@@ -51,14 +49,12 @@ export class UsersController {
     @Body()
     toUpdate: userDto,
   ) {
-    const idParseado = Number(id);
-    return await this.usersService.updateUser(idParseado, toUpdate);
+    return await this.usersService.updateUser(id, toUpdate);
   }
 
   @Delete(':id')
   @UseGuards(headerAuthorization)
   async deleteUser(@Param('id') id: string) {
-    const idParseado = Number(id);
-    return await this.usersService.deleteUser(idParseado);
+    return await this.usersService.deleteUser(id);
   }
 }

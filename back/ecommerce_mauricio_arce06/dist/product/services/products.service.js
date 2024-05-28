@@ -8,33 +8,65 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductsService = void 0;
 const common_1 = require("@nestjs/common");
-const productsRepository_1 = require("../repository/productsRepository");
+const typeorm_1 = require("@nestjs/typeorm");
+const product_entity_1 = require("../product.entity");
+const typeorm_2 = require("typeorm");
+const fs_1 = require("fs");
 let ProductsService = class ProductsService {
     constructor(productsRepository) {
         this.productsRepository = productsRepository;
     }
-    getProducts() {
-        return this.productsRepository.getProducts();
+    async getProducts() {
+        return await this.productsRepository.find();
     }
-    getProductById(id) {
-        return this.productsRepository.getProductById(id);
+    async getProductById(id) {
+        return await this.productsRepository.findOne({ where: { id } });
     }
-    postProduct(product) {
-        return this.productsRepository.postProduct(product);
+    async postProduct(product) {
+        const newProduct = await this.productsRepository.create(product);
+        if (newProduct) {
+            const prodSaved = await this.productsRepository.save(newProduct);
+            console.log(prodSaved);
+            return prodSaved;
+        }
+        else
+            return { message: 'El prodcuto no se pudo crear' };
     }
-    updateProduct(id, toUpdate) {
-        return this.productsRepository.updateProduct(id, toUpdate);
+    async updateProduct(id, toUpdate) {
+        const user = await this.productsRepository.findOne({ where: { id } });
+        if (user) {
+            await this.productsRepository.update(user, toUpdate);
+            return user.id;
+        }
+        else
+            return { message: 'El producto no existe' };
     }
-    deleteProduct(id) {
-        return this.productsRepository.deleteProduct(id);
+    async deleteProduct(id) {
+        const user = await this.productsRepository.findOne({ where: { id } });
+        if (user) {
+            return this.productsRepository.delete(user);
+        }
+        else
+            return { message: 'El producto no existe' };
+    }
+    async preLoadedProducts() {
+        const productos = JSON.parse((0, fs_1.readFileSync)('c:/Users/Mauri/Documents/Programación/PM4-MauricioArce06/back/ecommerce_mauricio_arce06/src/utils/data.json', 'utf8'));
+        const preLoadedProducts = await this.productsRepository.create(productos);
+        await this.productsRepository.save(preLoadedProducts);
+        console.log(productos);
+        return preLoadedProducts;
     }
 };
 exports.ProductsService = ProductsService;
 exports.ProductsService = ProductsService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [productsRepository_1.ProductsRepository])
+    __param(0, (0, typeorm_1.InjectRepository)(product_entity_1.Products)),
+    __metadata("design:paramtypes", [typeorm_2.Repository])
 ], ProductsService);
 //# sourceMappingURL=products.service.js.map

@@ -13,17 +13,17 @@ export class UsersService {
   async getUsers(page: number, limit: number) {
     return this.userRepository.getUser(page, limit);
   }
-  async getUserById(id: number) {
+  async getUserById(id: string) {
     return this.userRepository.getUserById(id);
   }
   async postUser(user: userDto) {
     // this.credentialRepository.postCredential(credential);
     return this.userRepository.postUser(user);
   }
-  async updateUser(id: number, toUpdate: userDto) {
+  async updateUser(id: string, toUpdate: userDto) {
     return this.userRepository.updateUser(id, toUpdate);
   }
-  async deleteUser(id: number) {
+  async deleteUser(id: string) {
     return this.userRepository.deleteUser(id);
   }
 }

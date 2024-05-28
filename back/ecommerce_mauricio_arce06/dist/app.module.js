@@ -13,12 +13,31 @@ const app_service_1 = require("./app.service");
 const users_module_1 = require("./user/modules/users.module");
 const products_module_1 = require("./product/products.module");
 const auth_module_1 = require("./auth/auth.module");
+const typeorm_1 = require("@nestjs/typeorm");
+const config_1 = require("@nestjs/config");
+const data_source_1 = require("./config/data-source");
+const categories_module_1 = require("./categories/categories/categories.module");
+const orders_module_1 = require("./orders/orders.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [users_module_1.UsersModule, products_module_1.ProductsModule, auth_module_1.AuthModule],
+        imports: [
+            config_1.ConfigModule.forRoot({
+                isGlobal: true,
+                load: [data_source_1.default],
+            }),
+            typeorm_1.TypeOrmModule.forRootAsync({
+                inject: [config_1.ConfigService],
+                useFactory: (configService) => configService.get('typeorm'),
+            }),
+            auth_module_1.AuthModule,
+            users_module_1.UsersModule,
+            products_module_1.ProductsModule,
+            categories_module_1.CategoriesModule,
+            orders_module_1.OrdersModule,
+        ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
     })

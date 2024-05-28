@@ -32,19 +32,16 @@ let UsersController = class UsersController {
         return await this.usersService.getUsers(page, limit);
     }
     async getUserById(id) {
-        const idParseado = Number(id);
-        return await this.usersService.getUserById(idParseado);
+        return await this.usersService.getUserById(id);
     }
     async postUser(user) {
         return await this.usersService.postUser(user);
     }
     async updateUser(id, toUpdate) {
-        const idParseado = Number(id);
-        return await this.usersService.updateUser(idParseado, toUpdate);
+        return await this.usersService.updateUser(id, toUpdate);
     }
     async deleteUser(id) {
-        const idParseado = Number(id);
-        return await this.usersService.deleteUser(idParseado);
+        return await this.usersService.deleteUser(id);
     }
 };
 exports.UsersController = UsersController;

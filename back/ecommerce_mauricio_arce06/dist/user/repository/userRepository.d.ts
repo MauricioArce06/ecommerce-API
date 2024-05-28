@@ -1,39 +1,18 @@
 import { userDto } from '../Dto/userDto';
 import { CredentialDto } from 'src/credential/Dto/credentialDto';
+import { User } from '../Entities/user.entity';
+import { Repository } from 'typeorm';
 export declare class UserRepository {
-    private users;
-    getUser(page: any, limit: any): Promise<{
-        id: number;
-        email: string;
-        name: string;
-        adress: string;
-        phone: string;
-        country: string;
-        city: string;
-    }[]>;
-    getUserById(id: number): Promise<{
-        id: number;
-        email: string;
-        name: string;
-        adress: string;
-        phone: string;
-        country: string;
-        city: string;
-    }>;
-    postUser(user: userDto): Promise<number>;
-    login(credentialDto: CredentialDto): {
-        id: number;
-        email: string;
-        name: string;
-        adress: string;
-        phone: string;
-        country: string;
-        city: string;
-    } | {
-        message: string;
-    };
-    updateUser(id: number, toUpdate: userDto): Promise<number | {
+    private usersRepository;
+    constructor(usersRepository: Repository<User>);
+    getUser(page: any, limit: any): Promise<User[]>;
+    getUserById(id: string): Promise<User>;
+    postUser(user: userDto): Promise<string>;
+    login(credentialDto: CredentialDto): any;
+    updateUser(id: string, toUpdate: userDto): Promise<string | {
         message: string;
     }>;
-    deleteUser(id: number): Promise<number>;
+    deleteUser(id: string): Promise<string | {
+        message: string;
+    }>;
 }

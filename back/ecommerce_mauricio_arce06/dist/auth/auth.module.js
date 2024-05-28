@@ -11,12 +11,14 @@ const common_1 = require("@nestjs/common");
 const auth_controller_1 = require("./controllers/auth.controller");
 const auth_service_1 = require("./services/auth.service");
 const userRepository_1 = require("../user/repository/userRepository");
+const typeorm_1 = require("@nestjs/typeorm");
+const user_entity_1 = require("../user/Entities/user.entity");
 let AuthModule = class AuthModule {
 };
 exports.AuthModule = AuthModule;
 exports.AuthModule = AuthModule = __decorate([
     (0, common_1.Module)({
-        imports: [],
+        imports: [typeorm_1.TypeOrmModule.forFeature([user_entity_1.User])],
         controllers: [auth_controller_1.AuthController],
         providers: [auth_service_1.AuthService, userRepository_1.UserRepository],
     })
