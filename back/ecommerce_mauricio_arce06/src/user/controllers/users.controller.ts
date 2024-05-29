@@ -4,13 +4,15 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
+  ParseUUIDPipe,
   Post,
   Put,
   Query,
   UseGuards,
 } from '@nestjs/common';
 import { UsersService } from 'src/user/services/users.service';
-import { userDto } from '../Dto/userDto';
+import { CreateUserDto, LoginUserDto } from '../Dto/userDto';
 import { headerAuthorization } from 'src/auth/guard/AuthGuard';
 // import { CredentialDto } from 'src/credential/Dto/credentialDto';
 
@@ -19,7 +21,10 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
   @Get()
   @UseGuards(headerAuthorization)
-  async getUsers(@Query('page') page: number, @Query('limit') limit: number) {
+  async getUsers(
+    @Query('page', ParseIntPipe) page: number,
+    @Query('limit', ParseIntPipe) limit: number,
+  ) {
     console.log(page, limit);
     if (!page) {
       page = 1;
@@ -33,28 +38,35 @@ export class UsersController {
 
   @Get(':id')
   @UseGuards(headerAuthorization)
-  async getUserById(@Param('id') id: string) {
+  async getUserById(@Param('id', ParseUUIDPipe) id: string) {
     return await this.usersService.getUserById(id);
   }
 
   @Post('register')
   @UseGuards()
-  async postUser(@Body() user: userDto) {
+  async postUser(@Body() user: CreateUserDto) {
+    console.log('aca llega');
+
     return await this.usersService.postUser(user);
+  }
+
+  @Post('login')
+  async login(@Body() credentialDto: LoginUserDto) {
+    return await this.usersService.login(credentialDto);
   }
 
   @Put(':id')
   async updateUser(
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body()
-    toUpdate: userDto,
+    toUpdate: CreateUserDto,
   ) {
     return await this.usersService.updateUser(id, toUpdate);
   }
 
   @Delete(':id')
   @UseGuards(headerAuthorization)
-  async deleteUser(@Param('id') id: string) {
+  async deleteUser(@Param('id', ParseUUIDPipe) id: string) {
     return await this.usersService.deleteUser(id);
   }
 }

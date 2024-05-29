@@ -22,14 +22,14 @@ export class User {
   @Column({ type: 'varchar', length: 20, select: false })
   password: string;
 
-  @Column({ type: 'int' })
-  phone: number;
+  @Column()
+  phone: string;
 
   @Column({ type: 'varchar', length: 50 })
   country: string;
 
   @Column({ type: 'varchar' })
-  adress: string;
+  address: string;
 
   @Column({ type: 'varchar', length: 50 })
   city: string;

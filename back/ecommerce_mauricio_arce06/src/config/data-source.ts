@@ -13,7 +13,7 @@ const AppDataSource = {
   // logging: true,
   // dropSchema: true,
   entities: ['dist/**/*.entity{.ts,.js}'],
-  migrations: [],
+  migrations: ['dist/migrations/*{.ts,.js}'],
   autoLoadEntities: true,
 };
 

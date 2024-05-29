@@ -1,11 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { ProductDto } from '../productDto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Products } from '../product.entity';
 import { Repository } from 'typeorm';
-import { Products as ProductsEntity } from '../product.entity';
 import { fileURLToPath } from 'url';
 import { readFileSync } from 'fs';
+import { CreateProductsDto } from '../productDto';
 
 @Injectable()
 export class ProductsService {
@@ -22,7 +21,9 @@ export class ProductsService {
     return await this.productsRepository.findOne({ where: { id } });
   }
 
-  async postProduct(product: ProductsEntity) {
+  async postProduct(product: CreateProductsDto) {
+    console.log('hasta aca llega');
+
     const newProduct = await this.productsRepository.create(product);
     if (newProduct) {
       const prodSaved = await this.productsRepository.save(newProduct);
@@ -31,7 +32,7 @@ export class ProductsService {
     } else return { message: 'El prodcuto no se pudo crear' };
   }
 
-  async updateProduct(id: string, toUpdate: ProductDto) {
+  async updateProduct(id: string, toUpdate: CreateProductsDto) {
     const user = await this.productsRepository.findOne({ where: { id } });
     if (user) {
       await this.productsRepository.update(user, toUpdate);

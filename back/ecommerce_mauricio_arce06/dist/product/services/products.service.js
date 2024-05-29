@@ -29,6 +29,7 @@ let ProductsService = class ProductsService {
         return await this.productsRepository.findOne({ where: { id } });
     }
     async postProduct(product) {
+        console.log('hasta aca llega');
         const newProduct = await this.productsRepository.create(product);
         if (newProduct) {
             const prodSaved = await this.productsRepository.save(newProduct);

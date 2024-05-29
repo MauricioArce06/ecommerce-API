@@ -1,5 +1,4 @@
-export interface ProductDto {
-    id: string;
+export declare class CreateProductsDto {
     name: string;
     description: string;
     price: number;

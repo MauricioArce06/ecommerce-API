@@ -13,7 +13,7 @@ const AppDataSource = {
     database: envCon_1.DB_NAME,
     synchronize: true,
     entities: ['dist/**/*.entity{.ts,.js}'],
-    migrations: [],
+    migrations: ['dist/migrations/*{.ts,.js}'],
     autoLoadEntities: true,
 };
 exports.default = (0, config_1.registerAs)('typeorm', () => AppDataSource);

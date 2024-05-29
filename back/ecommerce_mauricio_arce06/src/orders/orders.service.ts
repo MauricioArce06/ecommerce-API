@@ -1,13 +1,13 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Orders } from 'src/entities/order.entity';
 import { Repository } from 'typeorm';
-import ordersDto from './ordersDto';
 import { User } from 'src/user/Entities/user.entity';
 import { OrdersDetailService } from 'src/orders-detail/orders-detail.service';
 import { Products } from 'src/product/product.entity';
 import { OrderDetailDto2 } from 'src/orders-detail/order-detail.dto';
 import { OrdersDetail } from 'src/entities/orderDetail.entity';
+import { CreateOrdersDto } from './dtos/ordersDto';
 
 @Injectable()
 export class OrdersService {
@@ -42,12 +42,10 @@ export class OrdersService {
       },
     });
 
-    console.log(await this.ordersDetailService.getOrdersDetail(order));
-
     return order;
   }
 
-  async postOrders(orders: ordersDto) {
+  async postOrders(orders: CreateOrdersDto) {
     const { user_id, products } = orders;
     let total = 0;
     const user = await this.userRepository.findOne({ where: { id: user_id } });
@@ -67,12 +65,16 @@ export class OrdersService {
       for (const producto of products) {
         const { id } = producto;
         console.log(id);
-        const orderDetail = await this.ordersDetailService.addOrderDetail({
-          product_id: id,
-          order_id: order.id,
-        });
-        total = total + Number(orderDetail.price);
-        ordersDetail.push(orderDetail);
+        try {
+          const orderDetail = await this.ordersDetailService.addOrderDetail({
+            product_id: id,
+            order_id: order.id,
+          });
+          total = total + Number(orderDetail.price);
+          ordersDetail.push(orderDetail);
+        } catch (error) {
+          throw new BadRequestException();
+        }
       }
       console.log('orderSaved por actualizar');
 

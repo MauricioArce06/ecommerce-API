@@ -16,7 +16,7 @@ exports.ProductsController = void 0;
 const common_1 = require("@nestjs/common");
 const products_service_1 = require("../services/products.service");
 const AuthGuard_1 = require("../../auth/guard/AuthGuard");
-const product_entity_1 = require("../product.entity");
+const productDto_1 = require("../productDto");
 let ProductsController = class ProductsController {
     constructor(productsService) {
         this.productsService = productsService;
@@ -31,6 +31,7 @@ let ProductsController = class ProductsController {
         return this.productsService.getProductById(id);
     }
     postProduct(product) {
+        console.log('aca llega');
         return this.productsService.postProduct(product);
     }
     updateProduct(id, toUpdate) {
@@ -55,7 +56,7 @@ __decorate([
 ], ProductsController.prototype, "preLoadedProducts", null);
 __decorate([
     (0, common_1.Get)(':id'),
-    __param(0, (0, common_1.Param)('id')),
+    __param(0, (0, common_1.Param)('id', common_1.ParseUUIDPipe)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
@@ -65,22 +66,22 @@ __decorate([
     (0, common_1.UseGuards)(AuthGuard_1.headerAuthorization),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [product_entity_1.Products]),
+    __metadata("design:paramtypes", [productDto_1.CreateProductsDto]),
     __metadata("design:returntype", void 0)
 ], ProductsController.prototype, "postProduct", null);
 __decorate([
     (0, common_1.Put)('/update/:id'),
     (0, common_1.UseGuards)(AuthGuard_1.headerAuthorization),
-    __param(0, (0, common_1.Param)('id')),
+    __param(0, (0, common_1.Param)('id', common_1.ParseUUIDPipe)),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:paramtypes", [String, productDto_1.CreateProductsDto]),
     __metadata("design:returntype", void 0)
 ], ProductsController.prototype, "updateProduct", null);
 __decorate([
     (0, common_1.Delete)(':id'),
     (0, common_1.UseGuards)(AuthGuard_1.headerAuthorization),
-    __param(0, (0, common_1.Param)('id')),
+    __param(0, (0, common_1.Param)('id', common_1.ParseUUIDPipe)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)

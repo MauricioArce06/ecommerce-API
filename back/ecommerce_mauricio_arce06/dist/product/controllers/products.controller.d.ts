@@ -1,16 +1,15 @@
 import { ProductsService } from '../services/products.service';
-import { ProductDto } from '../productDto';
-import { Products as ProductsEntity } from '../product.entity';
+import { CreateProductsDto } from '../productDto';
 export declare class ProductsController {
     private readonly productsService;
     constructor(productsService: ProductsService);
-    getProducts(): Promise<ProductsEntity[]>;
-    preLoadedProducts(): Promise<ProductsEntity[]>;
-    getProductById(id: string): Promise<ProductsEntity>;
-    postProduct(product: ProductsEntity): Promise<ProductsEntity | {
+    getProducts(): Promise<import("../product.entity").Products[]>;
+    preLoadedProducts(): Promise<import("../product.entity").Products[]>;
+    getProductById(id: string): Promise<import("../product.entity").Products>;
+    postProduct(product: CreateProductsDto): Promise<import("../product.entity").Products | {
         message: string;
     }>;
-    updateProduct(id: string, toUpdate: ProductDto): Promise<string | {
+    updateProduct(id: string, toUpdate: CreateProductsDto): Promise<string | {
         message: string;
     }>;
     deleteProduct(id: string): Promise<import("typeorm").DeleteResult | {

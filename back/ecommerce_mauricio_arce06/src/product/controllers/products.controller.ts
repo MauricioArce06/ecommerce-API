@@ -4,14 +4,14 @@ import {
   Delete,
   Get,
   Param,
+  ParseUUIDPipe,
   Post,
   Put,
   UseGuards,
 } from '@nestjs/common';
 import { ProductsService } from '../services/products.service';
-import { ProductDto } from '../productDto';
 import { headerAuthorization } from 'src/auth/guard/AuthGuard';
-import { Products as ProductsEntity } from '../product.entity';
+import { CreateProductsDto } from '../productDto';
 
 @Controller('products')
 export class ProductsController {
@@ -28,25 +28,30 @@ export class ProductsController {
   }
 
   @Get(':id')
-  getProductById(@Param('id') id: string) {
+  getProductById(@Param('id', ParseUUIDPipe) id: string) {
     return this.productsService.getProductById(id);
   }
 
   @Post('post')
   @UseGuards(headerAuthorization)
-  postProduct(@Body() product: ProductsEntity) {
+  postProduct(@Body() product: CreateProductsDto) {
+    console.log('aca llega');
+
     return this.productsService.postProduct(product);
   }
 
   @Put('/update/:id')
   @UseGuards(headerAuthorization)
-  updateProduct(@Param('id') id: string, @Body() toUpdate: ProductDto) {
+  updateProduct(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() toUpdate: CreateProductsDto,
+  ) {
     return this.productsService.updateProduct(id, toUpdate);
   }
 
   @Delete(':id')
   @UseGuards(headerAuthorization)
-  deleteProduct(@Param('id') id: string) {
+  deleteProduct(@Param('id', ParseUUIDPipe) id: string) {
     return this.productsService.deleteProduct(id);
   }
 }

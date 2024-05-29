@@ -2,12 +2,13 @@ import {
   Body,
   Controller,
   Get,
+  ParseUUIDPipe,
   Post,
   Query,
   UseInterceptors,
 } from '@nestjs/common';
 import { OrdersService } from './orders.service';
-import ordersDto from './ordersDto';
+import { CreateOrdersDto } from './dtos/ordersDto';
 import { OrdersInterceptor } from './interceptors/orders.interceptor';
 
 @Controller('orders')
@@ -15,13 +16,13 @@ export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 
   @Post()
-  postOrders(@Body() order: ordersDto) {
+  postOrders(@Body() order: CreateOrdersDto) {
     return this.ordersService.postOrders(order);
   }
 
   @Get()
   @UseInterceptors(OrdersInterceptor)
-  getOrders(@Query('id') id: string) {
+  getOrders(@Query('id', ParseUUIDPipe) id: string) {
     return this.ordersService.getOrders({ order_id: id });
   }
 }
