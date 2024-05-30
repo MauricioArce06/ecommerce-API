@@ -18,6 +18,7 @@ const config_1 = require("@nestjs/config");
 const data_source_1 = require("./config/data-source");
 const categories_module_1 = require("./categories/categories/categories.module");
 const orders_module_1 = require("./orders/orders.module");
+const cloudinary_module_1 = require("./cloudinary/cloudinary/cloudinary.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -37,6 +38,7 @@ exports.AppModule = AppModule = __decorate([
             products_module_1.ProductsModule,
             categories_module_1.CategoriesModule,
             orders_module_1.OrdersModule,
+            cloudinary_module_1.CloudinaryModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
