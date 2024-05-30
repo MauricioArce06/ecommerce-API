@@ -9,16 +9,19 @@ import {
   Patch,
   Put,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CloudinaryService } from './cloudinary.service';
+import { headerAuthorization } from 'src/auth/guard/AuthGuard';
 
 @Controller('files')
 export class CloudinaryController {
   constructor(private readonly CloudinaryService: CloudinaryService) {}
 
   @Patch('uploadImage/:id')
+  @UseGuards(headerAuthorization)
   @UseInterceptors(FileInterceptor('file'))
   upload(
     @UploadedFile(

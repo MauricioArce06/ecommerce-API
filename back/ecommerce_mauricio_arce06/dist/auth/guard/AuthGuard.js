@@ -5,30 +5,42 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.headerAuthorization = void 0;
 const common_1 = require("@nestjs/common");
-function headerAuthorizationValidation(req) {
-    const authHeader = req.headers['authorization'];
-    if (!authHeader)
-        throw new common_1.UnauthorizedException();
-    const [type, credentials] = authHeader.split(' ');
-    console.log(type, credentials);
-    if (type !== 'Basic' || !credentials)
-        throw new common_1.UnauthorizedException();
-    const [email, password] = credentials.split(':');
-    if (!email || !password)
-        throw new common_1.UnauthorizedException();
-    return true;
+const jwt_1 = require("@nestjs/jwt");
+const config_1 = require("../../config");
+async function headerAuthorizationValidation(req, jwtService) {
+    const token = req.headers['authorization']?.split(' ')[1] ?? '';
+    if (!token) {
+        throw new common_1.UnauthorizedException('Bearer token not found');
+    }
+    try {
+        const payload = await jwtService.verifyAsync(token, { secret: config_1.JWT_SECRET });
+        payload.iat = new Date(payload.iat * 1000).toUTCString();
+        payload.exp = new Date(payload.exp * 1000).toUTCString();
+        req.user = payload;
+        return true;
+    }
+    catch (error) {
+        throw new common_1.UnauthorizedException('Invalid token');
+    }
 }
 let headerAuthorization = class headerAuthorization {
+    constructor(jwtService) {
+        this.jwtService = jwtService;
+    }
     canActivate(context) {
         const req = context.switchToHttp().getRequest();
-        return headerAuthorizationValidation(req);
+        return headerAuthorizationValidation(req, this.jwtService);
     }
 };
 exports.headerAuthorization = headerAuthorization;
 exports.headerAuthorization = headerAuthorization = __decorate([
-    (0, common_1.Injectable)()
+    (0, common_1.Injectable)(),
+    __metadata("design:paramtypes", [jwt_1.JwtService])
 ], headerAuthorization);
 //# sourceMappingURL=AuthGuard.js.map

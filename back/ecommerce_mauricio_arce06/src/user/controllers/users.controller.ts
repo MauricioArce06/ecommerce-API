@@ -42,20 +42,8 @@ export class UsersController {
     return await this.usersService.getUserById(id);
   }
 
-  @Post('register')
-  @UseGuards()
-  async postUser(@Body() user: CreateUserDto) {
-    console.log('aca llega');
-
-    return await this.usersService.postUser(user);
-  }
-
-  @Post('login')
-  async login(@Body() credentialDto: LoginUserDto) {
-    return await this.usersService.login(credentialDto);
-  }
-
   @Put(':id')
+  @UseGuards(headerAuthorization)
   async updateUser(
     @Param('id', ParseUUIDPipe) id: string,
     @Body()

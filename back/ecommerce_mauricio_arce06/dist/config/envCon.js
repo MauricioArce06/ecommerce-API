@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CLOUDINARY_API_SECRET = exports.CLOUDINARY_API_KEY = exports.CLOUDINARY_CLOUD_NAME = exports.DB_USERNAME = exports.DB_PORT = exports.DB_PASSWORD = exports.DB_NAME = exports.DB_HOST = void 0;
+exports.JWT_SECRET = exports.CLOUDINARY_API_SECRET = exports.CLOUDINARY_API_KEY = exports.CLOUDINARY_CLOUD_NAME = exports.DB_USERNAME = exports.DB_PORT = exports.DB_PASSWORD = exports.DB_NAME = exports.DB_HOST = void 0;
 const dotenv = require("dotenv");
 dotenv.config();
 const DB_HOST = process.env.DB_HOST;
@@ -19,4 +19,6 @@ const CLOUDINARY_API_KEY = process.env.CLOUDINARY_API_KEY;
 exports.CLOUDINARY_API_KEY = CLOUDINARY_API_KEY;
 const CLOUDINARY_API_SECRET = process.env.CLOUDINARY_API_SECRET;
 exports.CLOUDINARY_API_SECRET = CLOUDINARY_API_SECRET;
+const JWT_SECRET = process.env.JWT_SECRET;
+exports.JWT_SECRET = JWT_SECRET;
 //# sourceMappingURL=envCon.js.map

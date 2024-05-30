@@ -10,6 +10,8 @@ import typeOrmConfig from './config/data-source';
 import { CategoriesModule } from './categories/categories/categories.module';
 import { OrdersModule } from './orders/orders.module';
 import { CloudinaryModule } from './cloudinary/cloudinary/cloudinary.module';
+import { JwtModule } from '@nestjs/jwt';
+import { JWT_SECRET } from './config';
 
 @Module({
   imports: [
@@ -28,6 +30,11 @@ import { CloudinaryModule } from './cloudinary/cloudinary/cloudinary.module';
     CategoriesModule,
     OrdersModule,
     CloudinaryModule,
+    JwtModule.register({
+      global: true,
+      signOptions: { expiresIn: '1h' },
+      secret: JWT_SECRET,
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],

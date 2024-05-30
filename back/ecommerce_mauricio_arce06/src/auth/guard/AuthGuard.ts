@@ -4,31 +4,37 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { Observable } from 'rxjs';
+import { JWT_SECRET } from 'src/config';
 
-function headerAuthorizationValidation(req) {
-  const authHeader = req.headers['authorization'];
+async function headerAuthorizationValidation(req, jwtService) {
+  const token = req.headers['authorization']?.split(' ')[1] ?? '';
 
-  if (!authHeader) throw new UnauthorizedException();
-  const [type, credentials] = authHeader.split(' ');
+  if (!token) {
+    throw new UnauthorizedException('Bearer token not found');
+  }
 
-  console.log(type, credentials);
+  try {
+    const payload = await jwtService.verifyAsync(token, { secret: JWT_SECRET });
+    payload.iat = new Date(payload.iat * 1000).toUTCString();
+    payload.exp = new Date(payload.exp * 1000).toUTCString();
+    req.user = payload;
 
-  if (type !== 'Basic' || !credentials) throw new UnauthorizedException();
-
-  const [email, password] = credentials.split(':');
-
-  if (!email || !password) throw new UnauthorizedException();
-  return true;
+    return true;
+  } catch (error) {
+    throw new UnauthorizedException('Invalid token');
+  }
 }
 
 @Injectable()
 export class headerAuthorization implements CanActivate {
+  constructor(private readonly jwtService: JwtService) {}
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
     const req = context.switchToHttp().getRequest();
 
-    return headerAuthorizationValidation(req);
+    return headerAuthorizationValidation(req, this.jwtService);
   }
 }

@@ -16,6 +16,7 @@ exports.CloudinaryController = void 0;
 const common_1 = require("@nestjs/common");
 const platform_express_1 = require("@nestjs/platform-express");
 const cloudinary_service_1 = require("./cloudinary.service");
+const AuthGuard_1 = require("../../auth/guard/AuthGuard");
 let CloudinaryController = class CloudinaryController {
     constructor(CloudinaryService) {
         this.CloudinaryService = CloudinaryService;
@@ -27,6 +28,7 @@ let CloudinaryController = class CloudinaryController {
 exports.CloudinaryController = CloudinaryController;
 __decorate([
     (0, common_1.Patch)('uploadImage/:id'),
+    (0, common_1.UseGuards)(AuthGuard_1.headerAuthorization),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file')),
     __param(0, (0, common_1.UploadedFile)(new common_1.ParseFilePipe({
         validators: [

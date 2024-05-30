@@ -19,7 +19,7 @@ export class User {
   @Column({ type: 'varchar', length: 50, unique: true })
   email: string;
 
-  @Column({ type: 'varchar', length: 20, select: false })
+  @Column({ type: 'varchar', length: 60, select: false })
   password: string;
 
   @Column()

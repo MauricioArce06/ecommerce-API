@@ -2,6 +2,7 @@ export declare class CreateUserDto {
     name: string;
     email: string;
     password: string;
+    confirmPassword: string;
     address: string;
     phone: string;
     country: string;
@@ -9,5 +10,8 @@ export declare class CreateUserDto {
 }
 export declare class LoginUserDto {
     email: string;
+    password: string;
+}
+export declare class CreateHashedUserDto extends CreateUserDto {
     password: string;
 }

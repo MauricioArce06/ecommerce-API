@@ -39,7 +39,6 @@ let UserRepository = class UserRepository {
                     id: true,
                     email: true,
                     name: true,
-                    password: true,
                     address: true,
                     phone: true,
                     country: true,
@@ -55,28 +54,48 @@ let UserRepository = class UserRepository {
     }
     async postUser(user) {
         console.log('aca llega');
-        const newUser = await this.usersRepository.create(user);
+        console.log(user);
+        const { name, email, password, address, phone, country, city } = user;
+        const newUser = await this.usersRepository.create({
+            name,
+            email,
+            password,
+            address,
+            phone,
+            country,
+            city,
+        });
         const userCreado = await this.usersRepository.save(newUser);
-        return userCreado.id;
+        return await this.getUserById(userCreado.id);
     }
-    login(credentialDto) {
+    async login(credentialDto) {
         const { email, password } = credentialDto;
+        console.log('llega al login Service');
         try {
-            const user = this.usersRepository.find({
-                where: { email: email, password: password },
+            const user = await this.usersRepository.findOne({
+                where: { email: email },
                 select: {
                     id: true,
                     email: true,
                     name: true,
                     address: true,
+                    password: true,
                     phone: true,
                     country: true,
                     city: true,
                 },
             });
+            console.log(user);
+            if (!user) {
+                throw new common_1.BadRequestException('Email or password are incorrect');
+            }
+            else {
+                console.log('encontro al user');
+                return user;
+            }
         }
         catch (error) {
-            throw new common_1.BadRequestException();
+            throw new common_1.BadRequestException('Email or password are incorrect');
         }
     }
     async updateUser(id, toUpdate) {

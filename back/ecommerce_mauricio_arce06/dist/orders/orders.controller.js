@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const orders_service_1 = require("./orders.service");
 const ordersDto_1 = require("./dtos/ordersDto");
 const orders_interceptor_1 = require("./interceptors/orders.interceptor");
+const AuthGuard_1 = require("../auth/guard/AuthGuard");
 let OrdersController = class OrdersController {
     constructor(ordersService) {
         this.ordersService = ordersService;
@@ -31,15 +32,16 @@ let OrdersController = class OrdersController {
 exports.OrdersController = OrdersController;
 __decorate([
     (0, common_1.Post)(),
+    (0, common_1.UseGuards)(AuthGuard_1.headerAuthorization),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [ordersDto_1.CreateOrdersDto]),
     __metadata("design:returntype", void 0)
 ], OrdersController.prototype, "postOrders", null);
 __decorate([
-    (0, common_1.Get)(),
+    (0, common_1.Get)(':id'),
     (0, common_1.UseInterceptors)(orders_interceptor_1.OrdersInterceptor),
-    __param(0, (0, common_1.Query)('id', common_1.ParseUUIDPipe)),
+    __param(0, (0, common_1.Param)('id', common_1.ParseUUIDPipe)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)

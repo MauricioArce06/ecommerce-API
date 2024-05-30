@@ -35,13 +35,6 @@ let UsersController = class UsersController {
     async getUserById(id) {
         return await this.usersService.getUserById(id);
     }
-    async postUser(user) {
-        console.log('aca llega');
-        return await this.usersService.postUser(user);
-    }
-    async login(credentialDto) {
-        return await this.usersService.login(credentialDto);
-    }
     async updateUser(id, toUpdate) {
         return await this.usersService.updateUser(id, toUpdate);
     }
@@ -68,22 +61,8 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UsersController.prototype, "getUserById", null);
 __decorate([
-    (0, common_1.Post)('register'),
-    (0, common_1.UseGuards)(),
-    __param(0, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [userDto_1.CreateUserDto]),
-    __metadata("design:returntype", Promise)
-], UsersController.prototype, "postUser", null);
-__decorate([
-    (0, common_1.Post)('login'),
-    __param(0, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [userDto_1.LoginUserDto]),
-    __metadata("design:returntype", Promise)
-], UsersController.prototype, "login", null);
-__decorate([
     (0, common_1.Put)(':id'),
+    (0, common_1.UseGuards)(AuthGuard_1.headerAuthorization),
     __param(0, (0, common_1.Param)('id', common_1.ParseUUIDPipe)),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),

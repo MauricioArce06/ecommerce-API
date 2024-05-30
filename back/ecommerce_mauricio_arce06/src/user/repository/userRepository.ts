@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { CreateUserDto } from '../Dto/userDto';
+import { CreateHashedUserDto, CreateUserDto } from '../Dto/userDto';
 import { CredentialDto } from 'src/credential/Dto/credentialDto';
 import { User } from '../Entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -33,7 +33,6 @@ export class UserRepository {
           id: true,
           email: true,
           name: true,
-          password: true,
           address: true,
           phone: true,
           country: true,
@@ -47,30 +46,48 @@ export class UserRepository {
       return updatedUser;
     }
   }
-  async postUser(user: CreateUserDto) {
+  async postUser(user: Omit<CreateHashedUserDto, 'confirmPassword'>) {
     console.log('aca llega');
-
-    const newUser = await this.usersRepository.create(user);
+    console.log(user);
+    const { name, email, password, address, phone, country, city } = user;
+    const newUser = await this.usersRepository.create({
+      name,
+      email,
+      password,
+      address,
+      phone,
+      country,
+      city,
+    });
     const userCreado = await this.usersRepository.save(newUser);
-    return userCreado.id;
+    return await this.getUserById(userCreado.id);
   }
-  login(credentialDto: CredentialDto) {
+  async login(credentialDto: CredentialDto) {
     const { email, password } = credentialDto;
+    console.log('llega al login Service');
     try {
-      const user = this.usersRepository.find({
-        where: { email: email, password: password },
+      const user = await this.usersRepository.findOne({
+        where: { email: email },
         select: {
           id: true,
           email: true,
           name: true,
           address: true,
+          password: true,
           phone: true,
           country: true,
           city: true,
         },
       });
+      console.log(user);
+      if (!user) {
+        throw new BadRequestException('Email or password are incorrect');
+      } else {
+        console.log('encontro al user');
+        return user;
+      }
     } catch (error) {
-      throw new BadRequestException();
+      throw new BadRequestException('Email or password are incorrect');
     }
   }
 
@@ -79,8 +96,6 @@ export class UserRepository {
     if (user) {
       await this.usersRepository.update(user[0], toUpdate);
       return user[0].id;
-      // console.log(user);
-      // Object.assign(user, toUpdate);
     } else return { message: 'user no encontrado' };
   }
 

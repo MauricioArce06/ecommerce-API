@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LoginUserDto = exports.CreateUserDto = void 0;
+exports.CreateHashedUserDto = exports.LoginUserDto = exports.CreateUserDto = void 0;
 const class_validator_1 = require("class-validator");
 const class_validator_2 = require("class-validator");
 class CreateUserDto {
@@ -39,6 +39,10 @@ __decorate([
     (0, class_validator_2.IsNotEmpty)(),
     __metadata("design:type", String)
 ], CreateUserDto.prototype, "password", void 0);
+__decorate([
+    (0, class_validator_2.IsNotEmpty)(),
+    __metadata("design:type", String)
+], CreateUserDto.prototype, "confirmPassword", void 0);
 __decorate([
     (0, class_validator_2.MinLength)(3),
     (0, class_validator_1.MaxLength)(80),
@@ -85,4 +89,12 @@ __decorate([
     (0, class_validator_2.IsNotEmpty)(),
     __metadata("design:type", String)
 ], LoginUserDto.prototype, "password", void 0);
+class CreateHashedUserDto extends CreateUserDto {
+}
+exports.CreateHashedUserDto = CreateHashedUserDto;
+__decorate([
+    (0, class_validator_1.Length)(60),
+    (0, class_validator_2.IsNotEmpty)(),
+    __metadata("design:type", String)
+], CreateHashedUserDto.prototype, "password", void 0);
 //# sourceMappingURL=userDto.js.map

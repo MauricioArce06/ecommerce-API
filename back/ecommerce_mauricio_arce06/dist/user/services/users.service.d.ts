@@ -5,12 +5,12 @@ export declare class UsersService {
     constructor(userRepository: UserRepository);
     getUsers(page: number, limit: number): Promise<import("../Entities/user.entity").User[]>;
     getUserById(id: string): Promise<import("../Entities/user.entity").User>;
-    postUser(user: CreateUserDto): Promise<string>;
+    postUser(user: CreateUserDto): Promise<import("../Entities/user.entity").User>;
     updateUser(id: string, toUpdate: CreateUserDto): Promise<string | {
         message: string;
     }>;
     deleteUser(id: string): Promise<string | {
         message: string;
     }>;
-    login(credentialDto: LoginUserDto): Promise<void>;
+    login(credentialDto: LoginUserDto): Promise<import("../Entities/user.entity").User>;
 }

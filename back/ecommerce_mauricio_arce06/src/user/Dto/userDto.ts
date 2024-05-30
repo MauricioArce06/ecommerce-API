@@ -1,4 +1,10 @@
-import { IsPhoneNumber, MaxLength } from 'class-validator';
+import {
+  IsPhoneNumber,
+  Length,
+  Matches,
+  MaxLength,
+  Validate,
+} from 'class-validator';
 import {
   IsEmail,
   IsNotEmpty,
@@ -28,6 +34,9 @@ export class CreateUserDto {
   @MaxLength(15)
   @IsNotEmpty()
   password: string;
+
+  @IsNotEmpty()
+  confirmPassword: string;
 
   @MinLength(3)
   @MaxLength(80)
@@ -65,6 +74,12 @@ export class LoginUserDto {
     minSymbols: 1,
   })
   @MaxLength(15)
+  @IsNotEmpty()
+  password: string;
+}
+
+export class CreateHashedUserDto extends CreateUserDto {
+  @Length(60)
   @IsNotEmpty()
   password: string;
 }
