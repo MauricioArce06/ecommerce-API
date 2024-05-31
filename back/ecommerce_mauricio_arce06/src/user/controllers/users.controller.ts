@@ -14,13 +14,17 @@ import {
 import { UsersService } from 'src/user/services/users.service';
 import { CreateUserDto, LoginUserDto } from '../Dto/userDto';
 import { headerAuthorization } from 'src/auth/guard/AuthGuard';
+import { Roles } from 'src/auth/Decorators/roles.decoratos';
+import { Role } from 'src/auth/rolEnum';
+import { RolesGuard } from 'src/auth/guard/roles.guard';
 // import { CredentialDto } from 'src/credential/Dto/credentialDto';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
   @Get()
-  @UseGuards(headerAuthorization)
+  @Roles(Role.Admin)
+  @UseGuards(headerAuthorization, RolesGuard)
   async getUsers(
     @Query('page', ParseIntPipe) page: number,
     @Query('limit', ParseIntPipe) limit: number,

@@ -34,6 +34,9 @@ export class User {
   @Column({ type: 'varchar', length: 50 })
   city: string;
 
+  @Column({ type: 'boolean', default: false, select: false })
+  isAdmin: boolean;
+
   @OneToMany(() => Orders, (orders) => orders.user_id)
   @JoinColumn({ name: 'orders_id' })
   orders_id: Orders[];

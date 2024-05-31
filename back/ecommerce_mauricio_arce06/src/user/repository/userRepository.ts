@@ -77,6 +77,7 @@ export class UserRepository {
           phone: true,
           country: true,
           city: true,
+          isAdmin: true,
         },
       });
       console.log(user);

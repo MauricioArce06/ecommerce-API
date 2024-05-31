@@ -12,6 +12,9 @@ import {
 import { ProductsService } from '../services/products.service';
 import { headerAuthorization } from 'src/auth/guard/AuthGuard';
 import { CreateProductsDto } from '../productDto';
+import { RolesGuard } from 'src/auth/guard/roles.guard';
+import { Roles } from 'src/auth/Decorators/roles.decoratos';
+import { Role } from 'src/auth/rolEnum';
 
 @Controller('products')
 export class ProductsController {
@@ -41,7 +44,8 @@ export class ProductsController {
   }
 
   @Put('/update/:id')
-  @UseGuards(headerAuthorization)
+  @Roles(Role.Admin)
+  @UseGuards(headerAuthorization, RolesGuard)
   updateProduct(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() toUpdate: CreateProductsDto,

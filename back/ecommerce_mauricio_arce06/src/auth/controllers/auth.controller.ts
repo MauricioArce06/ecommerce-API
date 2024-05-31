@@ -20,6 +20,7 @@ export class AuthController {
   @Post('signin')
   login(@Body() credentialDto: CredentialDto) {
     const { email, password } = credentialDto;
+    console.log('idiota');
 
     if (!email || !password) {
       return { message: 'Hay campos vacios' };

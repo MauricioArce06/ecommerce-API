@@ -4,6 +4,7 @@ import { UserRepository } from '../../user/repository/userRepository';
 import { CreateUserDto } from 'src/user/Dto/userDto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { Role } from '../rolEnum';
 
 @Injectable()
 export class AuthService {
@@ -47,28 +48,34 @@ export class AuthService {
   }
 
   async login(credentialDto: CredentialDto) {
-    const user = await this.UserRepository.login(credentialDto);
+    try {
+      const user = await this.UserRepository.login(credentialDto);
 
-    if (!user) {
+      if (!user) {
+        throw new BadRequestException('Email o password are incorrect');
+      }
+
+      const passwordMatch = await bcrypt.compare(
+        credentialDto.password,
+        user.password,
+      );
+
+      if (!passwordMatch) {
+        throw new BadRequestException('Email o password are incorrect');
+      }
+
+      const userPayload = {
+        sub: user.id,
+        id: user.id,
+        email: user.email,
+        roles: [user.isAdmin ? Role.Admin : Role.User],
+      };
+      console.log(userPayload);
+
+      const token = await this.jwtService.signAsync(userPayload);
+      return { message: 'user logged in successfully', token };
+    } catch (error) {
       throw new BadRequestException('Email o password are incorrect');
     }
-
-    const passwordMatch = await bcrypt.compare(
-      credentialDto.password,
-      user.password,
-    );
-
-    if (!passwordMatch) {
-      throw new BadRequestException('Email o password are incorrect');
-    }
-
-    const userPayload = {
-      sub: user.id,
-      id: user.id,
-      email: user.email,
-    };
-
-    const token = await this.jwtService.signAsync(userPayload);
-    return { message: 'user logged in successfully', token };
   }
 }

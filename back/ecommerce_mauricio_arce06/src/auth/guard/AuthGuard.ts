@@ -7,8 +7,10 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { Observable } from 'rxjs';
 import { JWT_SECRET } from 'src/config';
+import { Role } from '../rolEnum';
 
 async function headerAuthorizationValidation(req, jwtService) {
+  console.log('inicia bien');
   const token = req.headers['authorization']?.split(' ')[1] ?? '';
 
   if (!token) {
@@ -16,11 +18,16 @@ async function headerAuthorizationValidation(req, jwtService) {
   }
 
   try {
+    console.log('inicia bien 2');
+
     const payload = await jwtService.verifyAsync(token, { secret: JWT_SECRET });
     payload.iat = new Date(payload.iat * 1000).toUTCString();
     payload.exp = new Date(payload.exp * 1000).toUTCString();
-    req.user = payload;
 
+    req.user = payload;
+    console.log(payload);
+
+    console.log('termina bien');
     return true;
   } catch (error) {
     throw new UnauthorizedException('Invalid token');
