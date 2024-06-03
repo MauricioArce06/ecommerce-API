@@ -1,5 +1,5 @@
-import { Categories } from 'src/entities/category.entity';
-import { OrdersDetail } from 'src/entities/orderDetail.entity';
+import { Categories } from 'src/categories/category.entity';
+import { OrdersDetail } from 'src/orders-detail/orderDetail.entity';
 import {
   Column,
   Entity,

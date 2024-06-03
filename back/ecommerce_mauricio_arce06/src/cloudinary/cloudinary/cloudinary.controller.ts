@@ -15,7 +15,9 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CloudinaryService } from './cloudinary.service';
 import { headerAuthorization } from 'src/auth/guard/AuthGuard';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Upload Files')
 @Controller('files')
 export class CloudinaryController {
   constructor(private readonly CloudinaryService: CloudinaryService) {}

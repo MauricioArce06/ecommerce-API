@@ -1,13 +1,13 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Orders } from 'src/entities/order.entity';
 import { Repository } from 'typeorm';
-import { User } from 'src/user/Entities/user.entity';
 import { OrdersDetailService } from 'src/orders-detail/orders-detail.service';
 import { Products } from 'src/product/product.entity';
 import { OrderDetailDto2 } from 'src/orders-detail/order-detail.dto';
-import { OrdersDetail } from 'src/entities/orderDetail.entity';
 import { CreateOrdersDto } from './dtos/ordersDto';
+import { Orders } from './order.entity';
+import { OrdersDetail } from 'src/orders-detail/orderDetail.entity';
+import { User } from 'src/user/user.entity';
 
 @Injectable()
 export class OrdersService {

@@ -1,15 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { UserRepository } from '../repository/userRepository';
-// import { CredentialDto } from 'src/credential/Dto/credentialDto';
-import { CreateUserDto, LoginUserDto } from '../Dto/userDto';
-// import { CredentialRepository } from 'src/credential/repository/credentialRepository';
+import { CreateUserDto, LoginUserDto } from '../userDto';
+import { UserRepository } from '../userRepository';
 
 @Injectable()
 export class UsersService {
-  constructor(
-    private readonly userRepository: UserRepository,
-    // credentialRepository: CredentialRepository,
-  ) {}
+  constructor(private readonly userRepository: UserRepository) {}
   async getUsers(page: number, limit: number) {
     return this.userRepository.getUser(page, limit);
   }
@@ -19,7 +14,6 @@ export class UsersService {
   async postUser(user: CreateUserDto) {
     console.log('aca llega');
 
-    // this.credentialRepository.postCredential(credential);
     return this.userRepository.postUser(user);
   }
   async updateUser(id: string, toUpdate: CreateUserDto) {

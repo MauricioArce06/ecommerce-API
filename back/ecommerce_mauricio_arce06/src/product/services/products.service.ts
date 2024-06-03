@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Products } from '../product.entity';
 import { Repository } from 'typeorm';
@@ -53,10 +57,19 @@ export class ProductsService {
         'utf8',
       ),
     );
-    const preLoadedProducts = await this.productsRepository.create(productos);
-    await this.productsRepository.save(preLoadedProducts);
-    console.log(productos);
-
-    return preLoadedProducts;
+    const productos2 = [];
+    for (const producto of productos) {
+      const ExistingProduct = await this.productsRepository.findOne({
+        where: { name: producto.name },
+      });
+      if (ExistingProduct) {
+        throw new ConflictException('Seeder already exists');
+      } else {
+        const preLoadedProducts =
+          await this.productsRepository.create(productos);
+        await this.productsRepository.save(preLoadedProducts);
+        return preLoadedProducts;
+      }
+    }
   }
 }

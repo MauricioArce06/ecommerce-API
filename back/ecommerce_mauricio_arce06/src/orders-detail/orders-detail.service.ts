@@ -1,16 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { OrdersDetail } from 'src/entities/orderDetail.entity';
 import { Repository } from 'typeorm';
 import {
   OrderDetailDto,
   OrderDetailDto2,
   OrderDetailDto3,
 } from './order-detail.dto';
-import { User } from 'src/user/Entities/user.entity';
 import { Products } from 'src/product/product.entity';
-import { Orders } from 'src/entities/order.entity';
 import { ProductsService } from 'src/product/services/products.service';
+import { OrdersDetail } from './orderDetail.entity';
+import { Orders } from 'src/orders/order.entity';
 
 @Injectable()
 export class OrdersDetailService {

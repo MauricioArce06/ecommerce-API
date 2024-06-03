@@ -2,9 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Products } from 'src/product/product.entity';
 import { Repository } from 'typeorm';
-import { Categories } from '../../entities/category.entity';
 import { ProductsService } from 'src/product/services/products.service';
 import { readFileSync } from 'fs';
+import { Categories } from '../category.entity';
 
 @Injectable()
 export class CategoriesService {
