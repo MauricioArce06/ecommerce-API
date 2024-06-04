@@ -29,6 +29,7 @@ let CloudinaryController = class CloudinaryController {
 };
 exports.CloudinaryController = CloudinaryController;
 __decorate([
+    (0, swagger_1.ApiBearerAuth)(),
     (0, common_1.Patch)('uploadImage/:id'),
     (0, common_1.UseGuards)(AuthGuard_1.headerAuthorization),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file')),

@@ -7,8 +7,8 @@ import { Products } from 'src/product/product.entity';
 import { ProductsService } from 'src/product/services/products.service';
 import { OrdersDetail } from 'src/orders-detail/orderDetail.entity';
 import { Orders } from './order.entity';
-import { User } from 'src/user/user.entity';
-import { UsersModule } from 'src/user/users.module';
+import { UsersModule } from 'src/user/modules/users.module';
+import { User } from 'src/user/entity/user.entity';
 
 @Module({
   imports: [

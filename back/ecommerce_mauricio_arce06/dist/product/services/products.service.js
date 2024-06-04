@@ -57,8 +57,7 @@ let ProductsService = class ProductsService {
             return { message: 'El producto no existe' };
     }
     async preLoadedProducts() {
-        const productos = JSON.parse((0, fs_1.readFileSync)('c:/Users/Mauri/Documents/Programación/PM4-MauricioArce06/back/ecommerce_mauricio_arce06/src/utils/data.json', 'utf8'));
-        const productos2 = [];
+        const productos = JSON.parse((0, fs_1.readFileSync)('c:/Users/Mauri/Documents/Programacion/PM4-MauricioArce06/back/ecommerce_mauricio_arce06/src/utils/data.json', 'utf8'));
         for (const producto of productos) {
             const ExistingProduct = await this.productsRepository.findOne({
                 where: { name: producto.name },

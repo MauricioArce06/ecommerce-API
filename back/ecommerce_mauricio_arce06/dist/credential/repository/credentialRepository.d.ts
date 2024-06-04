@@ -1,4 +1,4 @@
-import { credentialEntity } from '../Entities/credentialEntity';
+import { credentialEntity } from '../Entities/credential.entity';
 export declare class CredentialRepository {
     private credentials;
     getCredentials(): credentialEntity[];

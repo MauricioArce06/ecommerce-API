@@ -12,6 +12,7 @@ const AppDataSource = {
     password: envCon_1.DB_PASSWORD,
     database: envCon_1.DB_NAME,
     synchronize: true,
+    dropSchema: true,
     entities: ['dist/**/*.entity{.ts,.js}'],
     migrations: ['dist/migrations/*{.ts,.js}'],
     autoLoadEntities: true,

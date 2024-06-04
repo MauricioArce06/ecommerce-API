@@ -7,7 +7,7 @@ import { OrderDetailDto2 } from 'src/orders-detail/order-detail.dto';
 import { CreateOrdersDto } from './dtos/ordersDto';
 import { Orders } from './order.entity';
 import { OrdersDetail } from 'src/orders-detail/orderDetail.entity';
-import { User } from 'src/user/user.entity';
+import { User } from 'src/user/entity/user.entity';
 
 @Injectable()
 export class OrdersService {

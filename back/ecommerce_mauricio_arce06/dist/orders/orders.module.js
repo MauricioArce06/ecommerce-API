@@ -20,8 +20,8 @@ const product_entity_1 = require("../product/product.entity");
 const products_service_1 = require("../product/services/products.service");
 const orderDetail_entity_1 = require("../orders-detail/orderDetail.entity");
 const order_entity_1 = require("./order.entity");
-const user_entity_1 = require("../user/user.entity");
-const users_module_1 = require("../user/users.module");
+const users_module_1 = require("../user/modules/users.module");
+const user_entity_1 = require("../user/entity/user.entity");
 let OrdersModule = OrdersModule_1 = class OrdersModule {
     constructor() {
         this.logger = new common_1.Logger(OrdersModule_1.name);

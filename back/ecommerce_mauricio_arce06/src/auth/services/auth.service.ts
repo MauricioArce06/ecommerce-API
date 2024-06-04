@@ -3,8 +3,8 @@ import { CredentialDto } from 'src/credential/Dto/credentialDto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { Role } from '../rolEnum';
-import { CreateUserDto } from 'src/user/userDto';
-import { UserRepository } from 'src/user/userRepository';
+import { CreateUserDto } from 'src/user/Dto/userDto';
+import { UserRepository } from 'src/user/repository/userRepository';
 
 @Injectable()
 export class AuthService {

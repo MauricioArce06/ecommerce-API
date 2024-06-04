@@ -14,7 +14,7 @@ const common_1 = require("@nestjs/common");
 const bcrypt = require("bcrypt");
 const jwt_1 = require("@nestjs/jwt");
 const rolEnum_1 = require("../rolEnum");
-const userRepository_1 = require("../../user/userRepository");
+const userRepository_1 = require("../../user/repository/userRepository");
 let AuthService = class AuthService {
     constructor(jwtService, UserRepository) {
         this.jwtService = jwtService;

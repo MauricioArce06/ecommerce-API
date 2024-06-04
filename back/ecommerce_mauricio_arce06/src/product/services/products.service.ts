@@ -53,11 +53,10 @@ export class ProductsService {
   async preLoadedProducts() {
     const productos = JSON.parse(
       readFileSync(
-        'c:/Users/Mauri/Documents/Programación/PM4-MauricioArce06/back/ecommerce_mauricio_arce06/src/utils/data.json',
+        'c:/Users/Mauri/Documents/Programacion/PM4-MauricioArce06/back/ecommerce_mauricio_arce06/src/utils/data.json',
         'utf8',
       ),
     );
-    const productos2 = [];
     for (const producto of productos) {
       const ExistingProduct = await this.productsRepository.findOne({
         where: { name: producto.name },

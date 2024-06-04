@@ -14,13 +14,13 @@ const openapi = require("@nestjs/swagger");
 const typeorm_1 = require("typeorm");
 const uuid_1 = require("uuid");
 const orderDetail_entity_1 = require("../orders-detail/orderDetail.entity");
-const user_entity_1 = require("../user/user.entity");
+const user_entity_1 = require("../user/entity/user.entity");
 let Orders = class Orders {
     constructor() {
         this.id = (0, uuid_1.v4)();
     }
     static _OPENAPI_METADATA_FACTORY() {
-        return { id: { required: true, type: () => String, default: (0, uuid_1.v4)() }, user_id: { required: true, type: () => require("../user/user.entity").User }, date: { required: true, type: () => String }, total: { required: true, type: () => Number }, orderDetail: { required: true, type: () => [require("../orders-detail/orderDetail.entity").OrdersDetail] } };
+        return { id: { required: true, type: () => String, default: (0, uuid_1.v4)() }, user_id: { required: true, type: () => require("../user/entity/user.entity").User }, date: { required: true, type: () => String }, total: { required: true, type: () => Number }, orderDetail: { required: true, type: () => [require("../orders-detail/orderDetail.entity").OrdersDetail] } };
     }
 };
 exports.Orders = Orders;

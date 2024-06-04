@@ -21,7 +21,7 @@ const orders_detail_service_1 = require("../orders-detail/orders-detail.service"
 const product_entity_1 = require("../product/product.entity");
 const order_entity_1 = require("./order.entity");
 const orderDetail_entity_1 = require("../orders-detail/orderDetail.entity");
-const user_entity_1 = require("../user/user.entity");
+const user_entity_1 = require("../user/entity/user.entity");
 let OrdersService = OrdersService_1 = class OrdersService {
     constructor(ordersRepository, userRepository, ordersDetailService, ordersDetailRepository, productsRepository) {
         this.ordersRepository = ordersRepository;

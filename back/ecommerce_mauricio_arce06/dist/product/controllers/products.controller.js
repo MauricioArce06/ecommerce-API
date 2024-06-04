@@ -70,6 +70,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], ProductsController.prototype, "getProductById", null);
 __decorate([
+    (0, swagger_1.ApiBearerAuth)(),
     (0, common_1.Post)('post'),
     (0, common_1.UseGuards)(AuthGuard_1.headerAuthorization),
     openapi.ApiResponse({ status: 201, type: Object }),
@@ -79,6 +80,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], ProductsController.prototype, "postProduct", null);
 __decorate([
+    (0, swagger_1.ApiBearerAuth)(),
     (0, common_1.Put)('/update/:id'),
     (0, roles_decoratos_1.Roles)(rolEnum_1.Role.Admin),
     (0, common_1.UseGuards)(AuthGuard_1.headerAuthorization, roles_guard_1.RolesGuard),
@@ -90,6 +92,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], ProductsController.prototype, "updateProduct", null);
 __decorate([
+    (0, swagger_1.ApiBearerAuth)(),
     (0, common_1.Delete)(':id'),
     (0, common_1.UseGuards)(AuthGuard_1.headerAuthorization),
     openapi.ApiResponse({ status: 200, type: Object }),

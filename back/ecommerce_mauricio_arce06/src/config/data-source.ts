@@ -11,7 +11,7 @@ const AppDataSource = {
   database: DB_NAME,
   synchronize: true,
   // logging: true,
-  // dropSchema: true,
+  dropSchema: true,
   entities: ['dist/**/*.entity{.ts,.js}'],
   migrations: ['dist/migrations/*{.ts,.js}'],
   autoLoadEntities: true,

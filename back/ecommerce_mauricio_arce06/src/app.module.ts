@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UsersModule } from './user/users.module';
+import { UsersModule } from './user/modules/users.module';
 import { ProductsModule } from './product/products.module';
 import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import typeOrmConfig from './config/data-source';
-import { CategoriesModule } from './categories/categories/categories.module';
+import { CategoriesModule } from './categories/categories.module';
 import { OrdersModule } from './orders/orders.module';
 import { CloudinaryModule } from './cloudinary/cloudinary/cloudinary.module';
 import { JwtModule } from '@nestjs/jwt';

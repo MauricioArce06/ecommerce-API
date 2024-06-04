@@ -1,5 +1,5 @@
 import { OrdersDetail } from 'src/orders-detail/orderDetail.entity';
-import { User } from 'src/user/user.entity';
+import { User } from 'src/user/entity/user.entity';
 export declare class Orders {
     id: string;
     user_id: User;

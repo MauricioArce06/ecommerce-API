@@ -33,6 +33,7 @@ let OrdersController = class OrdersController {
 };
 exports.OrdersController = OrdersController;
 __decorate([
+    (0, swagger_1.ApiBearerAuth)(),
     (0, common_1.Post)(),
     (0, common_1.UseGuards)(AuthGuard_1.headerAuthorization),
     openapi.ApiResponse({ status: 201, type: require("./order.entity").Orders }),

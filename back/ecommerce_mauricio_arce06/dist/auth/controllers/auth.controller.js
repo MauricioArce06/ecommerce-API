@@ -17,7 +17,8 @@ const openapi = require("@nestjs/swagger");
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 const auth_service_1 = require("../services/auth.service");
-const userDto_1 = require("../../user/userDto");
+const credentialDto_1 = require("../../credential/Dto/credentialDto");
+const userDto_1 = require("../../user/Dto/userDto");
 let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
@@ -46,8 +47,9 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "getAuth", null);
 __decorate([
+    (0, swagger_1.ApiBody)({ type: userDto_1.CreateUserDto }),
     (0, common_1.Post)('signup'),
-    openapi.ApiResponse({ status: 201, type: require("../../user/user.entity").User }),
+    openapi.ApiResponse({ status: 201, type: require("../../user/entity/user.entity").User }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [userDto_1.CreateUserDto]),
@@ -57,7 +59,7 @@ __decorate([
     (0, common_1.Post)('signin'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [credentialDto_1.CredentialDto]),
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "login", null);
 exports.AuthController = AuthController = __decorate([

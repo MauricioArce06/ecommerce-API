@@ -5,6 +5,8 @@ const app_module_1 = require("./app.module");
 const globalMidd_1 = require("./middlewares/globalMidd");
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
+const products_service_1 = require("./product/services/products.service");
+const categories_service_1 = require("./categories/categories.service");
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     app.useGlobalPipes(new common_1.ValidationPipe({
@@ -12,10 +14,15 @@ async function bootstrap() {
         forbidNonWhitelisted: true,
     }));
     app.use(globalMidd_1.GlobalMidd);
+    const productsService = app.get(products_service_1.ProductsService);
+    const categoriesService = app.get(categories_service_1.CategoriesService);
+    categoriesService.getCategoriesSeeder();
+    productsService.preLoadedProducts();
     const swaggerConfig = new swagger_1.DocumentBuilder()
         .setTitle('Ecommerce API')
         .setDescription('Esta es una API de nest para ser empleada para un ecommerce')
         .setVersion('1.0')
+        .addBearerAuth()
         .build();
     const document = swagger_1.SwaggerModule.createDocument(app, swaggerConfig);
     swagger_1.SwaggerModule.setup('api', app, document);

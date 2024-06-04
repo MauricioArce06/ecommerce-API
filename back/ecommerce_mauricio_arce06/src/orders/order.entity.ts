@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 import { OrdersDetail } from 'src/orders-detail/orderDetail.entity';
-import { User } from 'src/user/user.entity';
+import { User } from 'src/user/entity/user.entity';
 
 @Entity('orders')
 export class Orders {
