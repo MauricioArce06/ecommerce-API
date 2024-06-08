@@ -22,7 +22,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
-          context: ./back/ecommerce_mauricio_arce06/
-          file: .Dockerfile
+          context: ./back/ecommerce_mauricio_arce06
+          file: ./back/ecommerce_mauricio_arce06/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/ecommerce-api:latest
