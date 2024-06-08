@@ -23,6 +23,6 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: "../../back/ecommerce_mauricio_arce06/Dockerfile"
+          file: ./back/ecommerce_mauricio_arce06/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/ecommerce-api:latest
