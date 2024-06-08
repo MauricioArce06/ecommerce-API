@@ -6,7 +6,8 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ProductsService } from './product/services/products.service';
 import { CategoriesService } from './categories/categories.service';
 import { log } from 'console';
-import { createConnection } from 'typeorm';
+import { getConnection, DataSource, DataSourceOptions } from 'typeorm';
+import { AppDataSource } from './config/data-source';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -46,5 +47,6 @@ async function bootstrap() {
 
   //* Start server
   await app.listen(3000);
+  AppDataSource;
 }
 bootstrap();
