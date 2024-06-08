@@ -20,7 +20,7 @@ let Products = class Products {
         this.id = (0, uuid_1.v4)();
     }
     static _OPENAPI_METADATA_FACTORY() {
-        return { id: { required: true, type: () => String, default: (0, uuid_1.v4)() }, name: { required: true, type: () => String }, description: { required: true, type: () => String }, price: { required: true, type: () => Number }, stock: { required: true, type: () => Number }, imgUrl: { required: true, type: () => String }, categories: { required: true, type: () => require("../categories/category.entity").Categories }, orderDetail: { required: true, type: () => [require("../orders-detail/orderDetail.entity").OrdersDetail] } };
+        return { id: { required: true, type: () => String, default: (0, uuid_1.v4)() }, name: { required: true, type: () => String }, description: { required: true, type: () => String }, price: { required: true, type: () => Number }, stock: { required: true, type: () => Number }, imgUrl: { required: true, type: () => String }, category: { required: true, type: () => require("../categories/category.entity").Categories }, orderDetail: { required: true, type: () => [require("../orders-detail/orderDetail.entity").OrdersDetail] } };
     }
 };
 exports.Products = Products;
@@ -49,9 +49,9 @@ __decorate([
     __metadata("design:type", String)
 ], Products.prototype, "imgUrl", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => category_entity_1.Categories, (category) => category.product),
+    (0, typeorm_1.ManyToOne)(() => category_entity_1.Categories, (category) => category.products),
     __metadata("design:type", category_entity_1.Categories)
-], Products.prototype, "categories", void 0);
+], Products.prototype, "category", void 0);
 __decorate([
     (0, typeorm_1.ManyToMany)(() => orderDetail_entity_1.OrdersDetail, (orderDetail) => orderDetail.product),
     (0, typeorm_1.JoinTable)({

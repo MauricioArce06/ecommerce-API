@@ -1,9 +1,11 @@
 import { Products } from '../product.entity';
 import { Repository } from 'typeorm';
 import { CreateProductsDto } from '../productDto';
+import { Categories } from 'src/categories/category.entity';
 export declare class ProductsService {
     private readonly productsRepository;
-    constructor(productsRepository: Repository<Products>);
+    private readonly categoriesRepository;
+    constructor(productsRepository: Repository<Products>, categoriesRepository: Repository<Categories>);
     getProducts(): Promise<Products[]>;
     getProductById(id: string): Promise<Products>;
     postProduct(product: CreateProductsDto): Promise<Products | {
@@ -15,5 +17,5 @@ export declare class ProductsService {
     deleteProduct(id: string): Promise<import("typeorm").DeleteResult | {
         message: string;
     }>;
-    preLoadedProducts(): Promise<Products[]>;
+    preLoadedProducts(): Promise<Products[] | "Seeder ya hecho">;
 }

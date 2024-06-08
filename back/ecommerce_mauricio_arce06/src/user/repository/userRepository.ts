@@ -1,10 +1,15 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+} from '@nestjs/common';
 import { CredentialDto } from 'src/credential/Dto/credentialDto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { take } from 'rxjs';
 import { User } from '../entity/user.entity';
 import { CreateHashedUserDto, CreateUserDto } from '../Dto/userDto';
+import { log } from 'console';
 
 @Injectable()
 export class UserRepository {
@@ -20,6 +25,16 @@ export class UserRepository {
     return await this.usersRepository.find({
       skip: pagina,
       take: limite,
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        address: true,
+        phone: true,
+        country: true,
+        city: true,
+        isAdmin: true,
+      },
     });
   }
 
@@ -44,23 +59,27 @@ export class UserRepository {
         },
       });
       return updatedUser;
-    }
+    } else throw new BadRequestException('User not found');
   }
   async postUser(user: Omit<CreateHashedUserDto, 'confirmPassword'>) {
-    console.log('aca llega');
-    console.log(user);
-    const { name, email, password, address, phone, country, city } = user;
-    const newUser = await this.usersRepository.create({
-      name,
-      email,
-      password,
-      address,
-      phone,
-      country,
-      city,
-    });
-    const userCreado = await this.usersRepository.save(newUser);
-    return await this.getUserById(userCreado.id);
+    const { name, email, password, address, phone, country, city, isAdmin } =
+      user;
+    try {
+      const newUser = await this.usersRepository.create({
+        name,
+        email,
+        password,
+        address,
+        phone,
+        country,
+        city,
+        isAdmin,
+      });
+      const userCreado = await this.usersRepository.save(newUser);
+      return await this.getUserById(userCreado.id);
+    } catch (error) {
+      throw new ConflictException("User couldn't be created");
+    }
   }
   async login(credentialDto: CredentialDto) {
     const { email, password } = credentialDto;
@@ -84,7 +103,6 @@ export class UserRepository {
       if (!user) {
         throw new BadRequestException('Email or password are incorrect');
       } else {
-        console.log('encontro al user');
         return user;
       }
     } catch (error) {
@@ -93,11 +111,40 @@ export class UserRepository {
   }
 
   async updateUser(id: string, toUpdate: CreateUserDto) {
-    const user = await this.usersRepository.find({ where: { id } });
-    if (user) {
-      await this.usersRepository.update(user[0], toUpdate);
-      return user[0].id;
-    } else return { message: 'user no encontrado' };
+    const { name, email, password, address, phone, country, city, isAdmin } =
+      toUpdate;
+
+    try {
+      const user = await this.usersRepository.findOne({
+        where: { id },
+        select: {
+          id: true,
+          email: true,
+          name: true,
+          address: true,
+          password: true,
+          phone: true,
+          country: true,
+          city: true,
+          isAdmin: true,
+        },
+      });
+      if (user) {
+        await this.usersRepository.update(id, {
+          name,
+          email,
+          password,
+          address,
+          phone,
+          country,
+          city,
+          isAdmin,
+        });
+        return user.id;
+      } else throw new BadRequestException('User not found');
+    } catch (error) {
+      return error.message;
+    }
   }
 
   async deleteUser(id: string) {

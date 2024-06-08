@@ -1,4 +1,9 @@
-import { BadRequestException, Injectable, Logger } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { OrdersDetailService } from 'src/orders-detail/orders-detail.service';
@@ -48,55 +53,58 @@ export class OrdersService {
   async postOrders(orders: CreateOrdersDto) {
     const { user_id, products } = orders;
     let total = 0;
-    const user = await this.userRepository.findOne({ where: { id: user_id } });
+    const user = await this.userRepository.findOne({
+      where: { id: user_id },
+    });
 
-    if (user) {
-      const Hoy = new Date().toLocaleDateString('es-Ar');
-      const order = new Orders();
+    if (!user) {
+      throw new BadRequestException('User not found');
+    }
+    const Hoy = new Date().toLocaleDateString('es-Ar');
+    const order = new Orders();
 
-      const orderSaved = await this.ordersRepository.save(order);
+    const orderSaved = await this.ordersRepository.save(order);
 
-      const ordersDetail = [];
-      console.log('ID DEL ORDER', order.id);
+    const ordersDetail = [];
+    console.log('ID DEL ORDER', order.id);
 
-      orderSaved.date = Hoy;
-      orderSaved.user_id = user;
+    orderSaved.date = Hoy;
+    orderSaved.user_id = user;
 
-      for (const producto of products) {
-        const { id } = producto;
-        console.log(id);
-        try {
-          const orderDetail = await this.ordersDetailService.addOrderDetail({
-            product_id: id,
-            order_id: order.id,
-          });
-          total = total + Number(orderDetail.price);
-          ordersDetail.push(orderDetail);
-        } catch (error) {
-          throw new BadRequestException();
-        }
+    for (const producto of products) {
+      const { id } = producto;
+      console.log(id);
+      try {
+        const orderDetail = await this.ordersDetailService.addOrderDetail({
+          product_id: id,
+          order_id: order.id,
+        });
+        total = total + Number(orderDetail.price);
+        ordersDetail.push(orderDetail);
+      } catch (error) {
+        throw new BadRequestException(error.message);
       }
-      console.log('orderSaved por actualizar');
+    }
+    console.log('orderSaved por actualizar');
 
-      orderSaved.orderDetail = ordersDetail;
-      orderSaved.total = total;
+    orderSaved.orderDetail = ordersDetail;
+    orderSaved.total = total;
 
-      console.log('orderSaved actualizado');
+    console.log('orderSaved actualizado');
 
-      const updatedOrder = await this.ordersRepository.save(orderSaved);
+    const updatedOrder = await this.ordersRepository.save(orderSaved);
 
-      return await this.ordersRepository.findOne({
-        where: { id: orderSaved.id },
-        relations: ['orderDetail'],
-        select: {
+    return await this.ordersRepository.findOne({
+      where: { id: orderSaved.id },
+      relations: ['orderDetail'],
+      select: {
+        id: true,
+        date: true,
+        total: true,
+        orderDetail: {
           id: true,
-          date: true,
-          total: true,
-          orderDetail: {
-            id: true,
-          },
         },
-      });
-    } else throw new Error('El usuario no existe');
+      },
+    });
   }
 }

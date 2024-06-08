@@ -17,6 +17,7 @@ const openapi = require("@nestjs/swagger");
 const common_1 = require("@nestjs/common");
 const categories_service_1 = require("./categories.service");
 const swagger_1 = require("@nestjs/swagger");
+const categoryDto_1 = require("./categoryDto");
 let CategoriesController = class CategoriesController {
     constructor(categoriesService) {
         this.categoriesService = categoriesService;
@@ -26,6 +27,9 @@ let CategoriesController = class CategoriesController {
     }
     seederCategories() {
         return this.categoriesService.getCategoriesSeeder();
+    }
+    getCategoryById(id) {
+        return this.categoriesService.getCategoryById(id);
     }
     addCategory(category) {
         return this.categoriesService.addCategory(category);
@@ -41,17 +45,25 @@ __decorate([
 ], CategoriesController.prototype, "getCategories", null);
 __decorate([
     (0, common_1.Get)('seeder'),
-    openapi.ApiResponse({ status: 200, type: [require("./category.entity").Categories] }),
+    openapi.ApiResponse({ status: 200, type: Object }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], CategoriesController.prototype, "seederCategories", null);
 __decorate([
+    (0, common_1.Get)(':id'),
+    openapi.ApiResponse({ status: 200, type: require("./category.entity").Categories }),
+    __param(0, (0, common_1.Param)('id', common_1.ParseUUIDPipe)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], CategoriesController.prototype, "getCategoryById", null);
+__decorate([
     (0, common_1.Post)('add'),
     openapi.ApiResponse({ status: 201, type: require("./category.entity").Categories }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [categoryDto_1.CategoryDto]),
     __metadata("design:returntype", void 0)
 ], CategoriesController.prototype, "addCategory", null);
 exports.CategoriesController = CategoriesController = __decorate([

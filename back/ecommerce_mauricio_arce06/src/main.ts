@@ -5,10 +5,13 @@ import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ProductsService } from './product/services/products.service';
 import { CategoriesService } from './categories/categories.service';
+import { log } from 'console';
+import { createConnection } from 'typeorm';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  log('Iniciando...');
   //* Pipes and middlewares
   app.useGlobalPipes(
     new ValidationPipe({
@@ -19,12 +22,14 @@ async function bootstrap() {
   app.use(GlobalMidd);
 
   //* Preload data
+  log('Preload data...');
   const productsService = app.get(ProductsService);
   const categoriesService = app.get(CategoriesService);
 
   categoriesService.getCategoriesSeeder();
   productsService.preLoadedProducts();
 
+  log('Preload data done!');
   //* Swagger
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Ecommerce API')

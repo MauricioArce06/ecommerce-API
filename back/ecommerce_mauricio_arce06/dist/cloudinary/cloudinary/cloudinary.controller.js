@@ -19,6 +19,7 @@ const platform_express_1 = require("@nestjs/platform-express");
 const cloudinary_service_1 = require("./cloudinary.service");
 const AuthGuard_1 = require("../../auth/guard/AuthGuard");
 const swagger_1 = require("@nestjs/swagger");
+const fileUploadDto_1 = require("./fileUploadDto");
 let CloudinaryController = class CloudinaryController {
     constructor(CloudinaryService) {
         this.CloudinaryService = CloudinaryService;
@@ -33,14 +34,19 @@ __decorate([
     (0, common_1.Patch)('uploadImage/:id'),
     (0, common_1.UseGuards)(AuthGuard_1.headerAuthorization),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file')),
+    (0, swagger_1.ApiConsumes)('multipart/form-data'),
+    (0, swagger_1.ApiBody)({
+        description: 'Imagen a subir(solo formatos .jpg, .jpeg, .png, .gif)',
+        type: fileUploadDto_1.fileUploadDto,
+    }),
     openapi.ApiResponse({ status: 200 }),
     __param(0, (0, common_1.UploadedFile)(new common_1.ParseFilePipe({
         validators: [
+            new common_1.FileTypeValidator({ fileType: /(jpg|jpeg|png|gif)$/i }),
             new common_1.MaxFileSizeValidator({
                 maxSize: 200 * 1024,
                 message: 'El archivo tiene q ser menos a 200KB',
             }),
-            new common_1.FileTypeValidator({ fileType: /(jpg|jpeg|png|gif)$/i }),
         ],
     }))),
     __param(1, (0, common_1.Param)('id', common_1.ParseUUIDPipe)),

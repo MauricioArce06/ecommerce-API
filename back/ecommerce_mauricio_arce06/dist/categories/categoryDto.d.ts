@@ -1,3 +1,3 @@
-interface CategoryDto {
+export declare class CategoryDto {
     name: string;
 }

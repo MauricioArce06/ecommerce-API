@@ -18,32 +18,49 @@ const typeorm_1 = require("@nestjs/typeorm");
 const product_entity_1 = require("../product.entity");
 const typeorm_2 = require("typeorm");
 const fs_1 = require("fs");
+const console_1 = require("console");
+const category_entity_1 = require("../../categories/category.entity");
 let ProductsService = class ProductsService {
-    constructor(productsRepository) {
+    constructor(productsRepository, categoriesRepository) {
         this.productsRepository = productsRepository;
+        this.categoriesRepository = categoriesRepository;
     }
     async getProducts() {
-        return await this.productsRepository.find();
+        return await this.productsRepository.find({ relations: ['category'] });
     }
     async getProductById(id) {
-        return await this.productsRepository.findOne({ where: { id } });
+        const producto = await this.productsRepository.findOne({ where: { id } });
+        if (!producto)
+            throw new common_1.BadRequestException("Product doesn't exist");
+        return producto;
     }
     async postProduct(product) {
         console.log('hasta aca llega');
-        const newProduct = await this.productsRepository.create(product);
-        if (newProduct) {
-            const prodSaved = await this.productsRepository.save(newProduct);
-            console.log(prodSaved);
-            return prodSaved;
+        const existingProduct = await this.productsRepository.findOne({
+            where: { name: product.name },
+        });
+        if (existingProduct) {
+            throw new common_1.ConflictException('Product already exists');
         }
-        else
-            return { message: 'El prodcuto no se pudo crear' };
+        try {
+            const newProduct = await this.productsRepository.create(product);
+            if (newProduct) {
+                const prodSaved = await this.productsRepository.save(newProduct);
+                console.log(prodSaved);
+                return prodSaved;
+            }
+            else
+                return { message: 'El prodcuto no se pudo crear' };
+        }
+        catch (error) {
+            throw new common_1.InternalServerErrorException("Can't create product");
+        }
     }
     async updateProduct(id, toUpdate) {
-        const user = await this.productsRepository.findOne({ where: { id } });
-        if (user) {
-            await this.productsRepository.update(user, toUpdate);
-            return user.id;
+        const product = await this.productsRepository.findOne({ where: { id } });
+        if (product) {
+            await this.productsRepository.update(product, toUpdate);
+            return product.id;
         }
         else
             return { message: 'El producto no existe' };
@@ -57,26 +74,45 @@ let ProductsService = class ProductsService {
             return { message: 'El producto no existe' };
     }
     async preLoadedProducts() {
-        const productos = JSON.parse((0, fs_1.readFileSync)('c:/Users/Mauri/Documents/Programacion/PM4-MauricioArce06/back/ecommerce_mauricio_arce06/src/utils/data.json', 'utf8'));
+        (0, console_1.log)('preloaded products...');
+        const productos = JSON.parse((0, fs_1.readFileSync)('./src/utils/data.json', 'utf8'));
         for (const producto of productos) {
-            const ExistingProduct = await this.productsRepository.findOne({
-                where: { name: producto.name },
-            });
-            if (ExistingProduct) {
-                throw new common_1.ConflictException('Seeder already exists');
+            try {
+                const ExistingProduct = await this.productsRepository.findOne({
+                    where: { name: producto.name },
+                });
+                const existingCategory = await this.categoriesRepository.findOne({
+                    where: { name: producto.category },
+                });
+                if (ExistingProduct) {
+                    return 'Seeder ya hecho';
+                }
+                else {
+                    const { name, description, price, stock, imgUrl } = producto;
+                    const preLoadedProduct = await this.productsRepository.create({
+                        name,
+                        description,
+                        price,
+                        stock,
+                        imgUrl,
+                        category: existingCategory,
+                    });
+                    await this.productsRepository.save(preLoadedProduct);
+                }
             }
-            else {
-                const preLoadedProducts = await this.productsRepository.create(productos);
-                await this.productsRepository.save(preLoadedProducts);
-                return preLoadedProducts;
+            catch (error) {
+                console.log(error);
             }
         }
+        return await this.productsRepository.find();
     }
 };
 exports.ProductsService = ProductsService;
 exports.ProductsService = ProductsService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(product_entity_1.Products)),
-    __metadata("design:paramtypes", [typeorm_2.Repository])
+    __param(1, (0, typeorm_1.InjectRepository)(category_entity_1.Categories)),
+    __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_2.Repository])
 ], ProductsService);
 //# sourceMappingURL=products.service.js.map

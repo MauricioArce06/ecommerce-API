@@ -1,10 +1,17 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Products } from 'src/product/product.entity';
 import { Repository } from 'typeorm';
 import { ProductsService } from 'src/product/services/products.service';
 import { readFileSync } from 'fs';
 import { Categories } from './category.entity';
+import { log } from 'console';
+import { CategoryDto } from './categoryDto';
 
 @Injectable()
 export class CategoriesService {
@@ -17,30 +24,39 @@ export class CategoriesService {
     return await this.categoryService.find();
   }
 
-  async getCategoriesSeeder() {
-    const productos = JSON.parse(
-      readFileSync(
-        'c:/Users/Mauri/Documents/Programacion/PM4-MauricioArce06/back/ecommerce_mauricio_arce06/src/utils/data.json',
-        'utf8',
-      ),
-    );
-    for (const product of productos) {
-      const ExistingCategory = await this.categoryService.findOne({
-        where: { name: product.category },
-      });
+  async getCategoryById(id: string) {
+    const category = await this.categoryService.findOne({
+      where: { id },
+      relations: ['products'],
+    });
+    if (!category) throw new BadRequestException("Category doesn't exist");
+    return category;
+  }
 
-      if (!ExistingCategory) {
-        const newCategory = await this.categoryService.create({
-          name: product.category,
+  async getCategoriesSeeder() {
+    const productos = JSON.parse(readFileSync('./src/utils/data.json', 'utf8'));
+    for (const product of productos) {
+      try {
+        const ExistingCategory = await this.categoryService.findOne({
+          where: { name: product.category },
         });
-        await this.categoryService.save(newCategory);
+
+        if (!ExistingCategory) {
+          const newCategory = this.categoryService.create({
+            name: product.category,
+          });
+
+          const savedCategory = await this.categoryService.save(newCategory);
+
+          console.log(savedCategory);
+        }
+      } catch (error) {
+        return 'Seeder already exists';
       }
     }
     return await this.categoryService.find();
   }
-
   async addCategory(category: CategoryDto) {
-    console.log(category);
     const ExistingCategory = await this.categoryService.findOne({
       where: { name: category.name },
     });

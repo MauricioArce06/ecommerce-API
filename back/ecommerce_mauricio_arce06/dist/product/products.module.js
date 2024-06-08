@@ -13,6 +13,7 @@ const products_controller_1 = require("./controllers/products.controller");
 const authenticationMidd_1 = require("../middlewares/authenticationMidd");
 const typeorm_1 = require("@nestjs/typeorm");
 const product_entity_1 = require("./product.entity");
+const category_entity_1 = require("../categories/category.entity");
 let ProductsModule = class ProductsModule {
     configure(consumer) {
         consumer
@@ -23,7 +24,10 @@ let ProductsModule = class ProductsModule {
 exports.ProductsModule = ProductsModule;
 exports.ProductsModule = ProductsModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([product_entity_1.Products])],
+        imports: [
+            typeorm_1.TypeOrmModule.forFeature([product_entity_1.Products]),
+            typeorm_1.TypeOrmModule.forFeature([category_entity_1.Categories]),
+        ],
         controllers: [products_controller_1.ProductsController],
         providers: [products_service_1.ProductsService],
         exports: [products_service_1.ProductsService],

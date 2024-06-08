@@ -11,11 +11,8 @@ const AppDataSource = {
     username: envCon_1.DB_USERNAME,
     password: envCon_1.DB_PASSWORD,
     database: envCon_1.DB_NAME,
-    synchronize: true,
-    dropSchema: true,
     entities: ['dist/**/*.entity{.ts,.js}'],
     migrations: ['dist/migrations/*{.ts,.js}'],
-    autoLoadEntities: true,
 };
 exports.default = (0, config_1.registerAs)('typeorm', () => AppDataSource);
 exports.connectionSource = new typeorm_1.DataSource(AppDataSource);

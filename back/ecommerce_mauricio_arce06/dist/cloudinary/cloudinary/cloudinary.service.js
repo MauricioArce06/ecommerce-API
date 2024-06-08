@@ -33,25 +33,20 @@ let CloudinaryService = class CloudinaryService {
             });
         };
         const updateImgUrl = async (file, id) => {
-            try {
-                const result = await uploadStream();
-                const product = await this.productsService.getProductById(id);
-                if (!product) {
-                    throw new Error('Producto no encontrado');
-                }
-                const updatedProduct = await this.productsService.updateProduct(id, {
-                    description: product.description,
-                    name: product.name,
-                    price: product.price,
-                    stock: product.stock,
-                    imgUrl: result.secure_url,
-                });
-                console.log(result.secure_url);
-                return { message: ' actualizacion correcta', updatedProduct };
+            const result = await uploadStream();
+            const product = await this.productsService.getProductById(id);
+            if (!product) {
+                throw new common_1.BadRequestException('Producto no encontrado');
             }
-            catch (error) {
-                throw new Error(`Upload failed: ${error.message}`);
-            }
+            const updatedProduct = await this.productsService.updateProduct(id, {
+                description: product.description,
+                name: product.name,
+                price: product.price,
+                stock: product.stock,
+                imgUrl: result.secure_url,
+            });
+            console.log(result.secure_url);
+            return { message: ' actualizacion correcta', updatedProduct };
         };
         return updateImgUrl(file, id);
     }

@@ -63,6 +63,9 @@ let OrdersDetailService = class OrdersDetailService {
         if (existingOrderDetail) {
             throw new Error('El producto ya existe');
         }
+        if (product.stock <= 0) {
+            throw new Error('El producto no tiene stock');
+        }
         const newOrderDetail = new orderDetail_entity_1.OrdersDetail();
         const productArray = [];
         productArray.push(product);

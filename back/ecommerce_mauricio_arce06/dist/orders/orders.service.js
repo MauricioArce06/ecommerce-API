@@ -54,50 +54,51 @@ let OrdersService = OrdersService_1 = class OrdersService {
     async postOrders(orders) {
         const { user_id, products } = orders;
         let total = 0;
-        const user = await this.userRepository.findOne({ where: { id: user_id } });
-        if (user) {
-            const Hoy = new Date().toLocaleDateString('es-Ar');
-            const order = new order_entity_1.Orders();
-            const orderSaved = await this.ordersRepository.save(order);
-            const ordersDetail = [];
-            console.log('ID DEL ORDER', order.id);
-            orderSaved.date = Hoy;
-            orderSaved.user_id = user;
-            for (const producto of products) {
-                const { id } = producto;
-                console.log(id);
-                try {
-                    const orderDetail = await this.ordersDetailService.addOrderDetail({
-                        product_id: id,
-                        order_id: order.id,
-                    });
-                    total = total + Number(orderDetail.price);
-                    ordersDetail.push(orderDetail);
-                }
-                catch (error) {
-                    throw new common_1.BadRequestException();
-                }
-            }
-            console.log('orderSaved por actualizar');
-            orderSaved.orderDetail = ordersDetail;
-            orderSaved.total = total;
-            console.log('orderSaved actualizado');
-            const updatedOrder = await this.ordersRepository.save(orderSaved);
-            return await this.ordersRepository.findOne({
-                where: { id: orderSaved.id },
-                relations: ['orderDetail'],
-                select: {
-                    id: true,
-                    date: true,
-                    total: true,
-                    orderDetail: {
-                        id: true,
-                    },
-                },
-            });
+        const user = await this.userRepository.findOne({
+            where: { id: user_id },
+        });
+        if (!user) {
+            throw new common_1.BadRequestException('User not found');
         }
-        else
-            throw new Error('El usuario no existe');
+        const Hoy = new Date().toLocaleDateString('es-Ar');
+        const order = new order_entity_1.Orders();
+        const orderSaved = await this.ordersRepository.save(order);
+        const ordersDetail = [];
+        console.log('ID DEL ORDER', order.id);
+        orderSaved.date = Hoy;
+        orderSaved.user_id = user;
+        for (const producto of products) {
+            const { id } = producto;
+            console.log(id);
+            try {
+                const orderDetail = await this.ordersDetailService.addOrderDetail({
+                    product_id: id,
+                    order_id: order.id,
+                });
+                total = total + Number(orderDetail.price);
+                ordersDetail.push(orderDetail);
+            }
+            catch (error) {
+                throw new common_1.BadRequestException(error.message);
+            }
+        }
+        console.log('orderSaved por actualizar');
+        orderSaved.orderDetail = ordersDetail;
+        orderSaved.total = total;
+        console.log('orderSaved actualizado');
+        const updatedOrder = await this.ordersRepository.save(orderSaved);
+        return await this.ordersRepository.findOne({
+            where: { id: orderSaved.id },
+            relations: ['orderDetail'],
+            select: {
+                id: true,
+                date: true,
+                total: true,
+                orderDetail: {
+                    id: true,
+                },
+            },
+        });
     }
 };
 exports.OrdersService = OrdersService;

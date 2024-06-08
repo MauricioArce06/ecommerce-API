@@ -3,11 +3,9 @@ import { OrdersDetail } from 'src/orders-detail/orderDetail.entity';
 import {
   Column,
   Entity,
-  JoinColumn,
   JoinTable,
   ManyToMany,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { v4 as uuid } from 'uuid';
@@ -32,8 +30,8 @@ export class Products {
   @Column({ type: 'varchar', default: 'default.jpg' })
   imgUrl: string;
 
-  @ManyToOne(() => Categories, (category) => category.product)
-  categories: Categories;
+  @ManyToOne(() => Categories, (category) => category.products)
+  category: Categories;
 
   @ManyToMany(() => OrdersDetail, (orderDetail) => orderDetail.product)
   @JoinTable({

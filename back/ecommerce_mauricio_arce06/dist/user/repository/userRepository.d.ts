@@ -9,9 +9,7 @@ export declare class UserRepository {
     getUserById(id: string): Promise<User>;
     postUser(user: Omit<CreateHashedUserDto, 'confirmPassword'>): Promise<User>;
     login(credentialDto: CredentialDto): Promise<User>;
-    updateUser(id: string, toUpdate: CreateUserDto): Promise<string | {
-        message: string;
-    }>;
+    updateUser(id: string, toUpdate: CreateUserDto): Promise<any>;
     deleteUser(id: string): Promise<string | {
         message: string;
     }>;

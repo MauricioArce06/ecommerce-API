@@ -1,5 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsPhoneNumber, Length, MaxLength } from 'class-validator';
+import {
+  IsBoolean,
+  IsOptional,
+  IsPhoneNumber,
+  Length,
+  MaxLength,
+} from 'class-validator';
 import {
   IsEmail,
   IsNotEmpty,
@@ -90,6 +96,15 @@ export class CreateUserDto {
     example: 'Bogota',
   })
   city: string;
+
+  @IsOptional()
+  @IsBoolean()
+  @ApiProperty({
+    description:
+      'Este campo es opcional. Indica si el usuario es administrador o no. Por defecto es falso',
+    example: true,
+  })
+  isAdmin: boolean;
 }
 
 export class LoginUserDto {

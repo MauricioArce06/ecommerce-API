@@ -22,6 +22,7 @@ const orderDetail_entity_1 = require("../orders-detail/orderDetail.entity");
 const order_entity_1 = require("./order.entity");
 const users_module_1 = require("../user/modules/users.module");
 const user_entity_1 = require("../user/entity/user.entity");
+const category_entity_1 = require("../categories/category.entity");
 let OrdersModule = OrdersModule_1 = class OrdersModule {
     constructor() {
         this.logger = new common_1.Logger(OrdersModule_1.name);
@@ -36,6 +37,7 @@ exports.OrdersModule = OrdersModule = OrdersModule_1 = __decorate([
             typeorm_1.TypeOrmModule.forFeature([user_entity_1.User]),
             typeorm_1.TypeOrmModule.forFeature([orderDetail_entity_1.OrdersDetail]),
             typeorm_1.TypeOrmModule.forFeature([product_entity_1.Products]),
+            typeorm_1.TypeOrmModule.forFeature([category_entity_1.Categories]),
             users_module_1.UsersModule,
         ],
         providers: [orders_service_1.OrdersService, orders_detail_service_1.OrdersDetailService, products_service_1.ProductsService],

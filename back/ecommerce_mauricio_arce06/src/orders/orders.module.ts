@@ -9,6 +9,7 @@ import { OrdersDetail } from 'src/orders-detail/orderDetail.entity';
 import { Orders } from './order.entity';
 import { UsersModule } from 'src/user/modules/users.module';
 import { User } from 'src/user/entity/user.entity';
+import { Categories } from 'src/categories/category.entity';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { User } from 'src/user/entity/user.entity';
     TypeOrmModule.forFeature([User]),
     TypeOrmModule.forFeature([OrdersDetail]),
     TypeOrmModule.forFeature([Products]),
+    TypeOrmModule.forFeature([Categories]),
     UsersModule,
   ],
   providers: [OrdersService, OrdersDetailService, ProductsService],

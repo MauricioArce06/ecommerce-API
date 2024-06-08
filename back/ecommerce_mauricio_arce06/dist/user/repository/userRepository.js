@@ -27,6 +27,16 @@ let UserRepository = class UserRepository {
         return await this.usersRepository.find({
             skip: pagina,
             take: limite,
+            select: {
+                id: true,
+                email: true,
+                name: true,
+                address: true,
+                phone: true,
+                country: true,
+                city: true,
+                isAdmin: true,
+            },
         });
     }
     async getUserById(id) {
@@ -51,22 +61,28 @@ let UserRepository = class UserRepository {
             });
             return updatedUser;
         }
+        else
+            throw new common_1.BadRequestException('User not found');
     }
     async postUser(user) {
-        console.log('aca llega');
-        console.log(user);
-        const { name, email, password, address, phone, country, city } = user;
-        const newUser = await this.usersRepository.create({
-            name,
-            email,
-            password,
-            address,
-            phone,
-            country,
-            city,
-        });
-        const userCreado = await this.usersRepository.save(newUser);
-        return await this.getUserById(userCreado.id);
+        const { name, email, password, address, phone, country, city, isAdmin } = user;
+        try {
+            const newUser = await this.usersRepository.create({
+                name,
+                email,
+                password,
+                address,
+                phone,
+                country,
+                city,
+                isAdmin,
+            });
+            const userCreado = await this.usersRepository.save(newUser);
+            return await this.getUserById(userCreado.id);
+        }
+        catch (error) {
+            throw new common_1.ConflictException("User couldn't be created");
+        }
     }
     async login(credentialDto) {
         const { email, password } = credentialDto;
@@ -91,7 +107,6 @@ let UserRepository = class UserRepository {
                 throw new common_1.BadRequestException('Email or password are incorrect');
             }
             else {
-                console.log('encontro al user');
                 return user;
             }
         }
@@ -100,13 +115,41 @@ let UserRepository = class UserRepository {
         }
     }
     async updateUser(id, toUpdate) {
-        const user = await this.usersRepository.find({ where: { id } });
-        if (user) {
-            await this.usersRepository.update(user[0], toUpdate);
-            return user[0].id;
+        const { name, email, password, address, phone, country, city, isAdmin } = toUpdate;
+        try {
+            const user = await this.usersRepository.findOne({
+                where: { id },
+                select: {
+                    id: true,
+                    email: true,
+                    name: true,
+                    address: true,
+                    password: true,
+                    phone: true,
+                    country: true,
+                    city: true,
+                    isAdmin: true,
+                },
+            });
+            if (user) {
+                await this.usersRepository.update(id, {
+                    name,
+                    email,
+                    password,
+                    address,
+                    phone,
+                    country,
+                    city,
+                    isAdmin,
+                });
+                return user.id;
+            }
+            else
+                throw new common_1.BadRequestException('User not found');
         }
-        else
-            return { message: 'user no encontrado' };
+        catch (error) {
+            return error.message;
+        }
     }
     async deleteUser(id) {
         const user = await this.usersRepository.find({ where: { id } });

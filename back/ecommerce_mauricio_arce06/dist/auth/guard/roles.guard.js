@@ -24,7 +24,7 @@ let RolesGuard = class RolesGuard {
         const req = context.switchToHttp().getRequest();
         const user = req.user;
         const hasRole = () => requiredRoles.some((role) => user.roles?.includes(role));
-        const valid = user && user.roles && user.roles && hasRole();
+        const valid = user && user.roles && hasRole();
         if (!valid) {
             throw new common_1.ForbiddenException("You don't have permission");
         }

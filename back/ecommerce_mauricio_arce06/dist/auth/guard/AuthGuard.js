@@ -14,19 +14,15 @@ const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
 const config_1 = require("../../config");
 async function headerAuthorizationValidation(req, jwtService) {
-    console.log('inicia bien');
     const token = req.headers['authorization']?.split(' ')[1] ?? '';
     if (!token) {
         throw new common_1.UnauthorizedException('Bearer token not found');
     }
     try {
-        console.log('inicia bien 2');
         const payload = await jwtService.verifyAsync(token, { secret: config_1.JWT_SECRET });
         payload.iat = new Date(payload.iat * 1000).toUTCString();
         payload.exp = new Date(payload.exp * 1000).toUTCString();
         req.user = payload;
-        console.log(payload);
-        console.log('termina bien');
         return true;
     }
     catch (error) {

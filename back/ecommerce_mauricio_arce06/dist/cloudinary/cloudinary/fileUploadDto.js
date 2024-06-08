@@ -9,19 +9,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CategoryDto = void 0;
+exports.fileUploadDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
-const class_validator_1 = require("class-validator");
-class CategoryDto {
+class fileUploadDto {
 }
-exports.CategoryDto = CategoryDto;
+exports.fileUploadDto = fileUploadDto;
 __decorate([
-    (0, swagger_1.ApiProperty)({
-        description: 'Nombre de la categoria a agregar',
-        example: 'Tablet',
-    }),
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", String)
-], CategoryDto.prototype, "name", void 0);
-//# sourceMappingURL=categoryDto.js.map
+    (0, swagger_1.ApiProperty)({ type: 'string', format: 'binary' }),
+    __metadata("design:type", Object)
+], fileUploadDto.prototype, "file", void 0);
+//# sourceMappingURL=fileUploadDto.js.map

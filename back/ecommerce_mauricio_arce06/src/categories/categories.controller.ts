@@ -1,6 +1,14 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseUUIDPipe,
+  Post,
+} from '@nestjs/common';
 import { CategoriesService } from './categories.service';
 import { ApiTags } from '@nestjs/swagger';
+import { CategoryDto } from './categoryDto';
 
 @ApiTags('Categories')
 @Controller('categories')
@@ -15,6 +23,11 @@ export class CategoriesController {
   @Get('seeder')
   seederCategories() {
     return this.categoriesService.getCategoriesSeeder();
+  }
+
+  @Get(':id')
+  getCategoryById(@Param('id', ParseUUIDPipe) id: string) {
+    return this.categoriesService.getCategoryById(id);
   }
 
   @Post('add')

@@ -7,9 +7,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Products } from './product.entity';
 import { CloudinaryConfig } from 'src/config/cloudinary';
 import { CloudinaryService } from 'src/cloudinary/cloudinary/cloudinary.service';
+import { Categories } from 'src/categories/category.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Products])],
+  imports: [
+    TypeOrmModule.forFeature([Products]),
+    TypeOrmModule.forFeature([Categories]),
+  ],
   controllers: [ProductsController],
   providers: [ProductsService],
   exports: [ProductsService],

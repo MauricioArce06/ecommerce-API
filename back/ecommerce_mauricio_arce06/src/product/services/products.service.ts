@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   InternalServerErrorException,
@@ -9,38 +10,55 @@ import { Repository } from 'typeorm';
 import { fileURLToPath } from 'url';
 import { readFileSync } from 'fs';
 import { CreateProductsDto } from '../productDto';
+import { log } from 'console';
+import { Categories } from 'src/categories/category.entity';
 
 @Injectable()
 export class ProductsService {
   constructor(
     @InjectRepository(Products)
     private readonly productsRepository: Repository<Products>,
+
+    @InjectRepository(Categories)
+    private readonly categoriesRepository: Repository<Categories>,
   ) {}
 
   async getProducts() {
-    return await this.productsRepository.find();
+    return await this.productsRepository.find({ relations: ['category'] });
   }
 
   async getProductById(id: string) {
-    return await this.productsRepository.findOne({ where: { id } });
+    const producto = await this.productsRepository.findOne({ where: { id } });
+    if (!producto) throw new BadRequestException("Product doesn't exist");
+    return producto;
   }
 
   async postProduct(product: CreateProductsDto) {
     console.log('hasta aca llega');
+    const existingProduct = await this.productsRepository.findOne({
+      where: { name: product.name },
+    });
+    if (existingProduct) {
+      throw new ConflictException('Product already exists');
+    }
 
-    const newProduct = await this.productsRepository.create(product);
-    if (newProduct) {
-      const prodSaved = await this.productsRepository.save(newProduct);
-      console.log(prodSaved);
-      return prodSaved;
-    } else return { message: 'El prodcuto no se pudo crear' };
+    try {
+      const newProduct = await this.productsRepository.create(product);
+      if (newProduct) {
+        const prodSaved = await this.productsRepository.save(newProduct);
+        console.log(prodSaved);
+        return prodSaved;
+      } else return { message: 'El prodcuto no se pudo crear' };
+    } catch (error) {
+      throw new InternalServerErrorException("Can't create product");
+    }
   }
 
   async updateProduct(id: string, toUpdate: CreateProductsDto) {
-    const user = await this.productsRepository.findOne({ where: { id } });
-    if (user) {
-      await this.productsRepository.update(user, toUpdate);
-      return user.id;
+    const product = await this.productsRepository.findOne({ where: { id } });
+    if (product) {
+      await this.productsRepository.update(product, toUpdate);
+      return product.id;
     } else return { message: 'El producto no existe' };
   }
 
@@ -50,25 +68,38 @@ export class ProductsService {
       return this.productsRepository.delete(user);
     } else return { message: 'El producto no existe' };
   }
+
   async preLoadedProducts() {
-    const productos = JSON.parse(
-      readFileSync(
-        'c:/Users/Mauri/Documents/Programacion/PM4-MauricioArce06/back/ecommerce_mauricio_arce06/src/utils/data.json',
-        'utf8',
-      ),
-    );
+    log('preloaded products...');
+    const productos = JSON.parse(readFileSync('./src/utils/data.json', 'utf8'));
     for (const producto of productos) {
-      const ExistingProduct = await this.productsRepository.findOne({
-        where: { name: producto.name },
-      });
-      if (ExistingProduct) {
-        throw new ConflictException('Seeder already exists');
-      } else {
-        const preLoadedProducts =
-          await this.productsRepository.create(productos);
-        await this.productsRepository.save(preLoadedProducts);
-        return preLoadedProducts;
+      try {
+        const ExistingProduct = await this.productsRepository.findOne({
+          where: { name: producto.name },
+        });
+
+        const existingCategory = await this.categoriesRepository.findOne({
+          where: { name: producto.category },
+        });
+
+        if (ExistingProduct) {
+          return 'Seeder ya hecho';
+        } else {
+          const { name, description, price, stock, imgUrl } = producto;
+          const preLoadedProduct = await this.productsRepository.create({
+            name,
+            description,
+            price,
+            stock,
+            imgUrl,
+            category: existingCategory,
+          });
+          await this.productsRepository.save(preLoadedProduct);
+        }
+      } catch (error) {
+        console.log(error);
       }
     }
+    return await this.productsRepository.find();
   }
 }

@@ -64,6 +64,9 @@ export class OrdersDetailService {
       throw new Error('El producto ya existe');
     }
 
+    if (product.stock <= 0) {
+      throw new Error('El producto no tiene stock');
+    }
     const newOrderDetail = new OrdersDetail();
 
     const productArray = [];

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { UploadApiResponse, v2 } from 'cloudinary';
 import * as toStream from 'buffer-to-stream';
 import { ProductsService } from 'src/product/services/products.service';
@@ -26,27 +26,23 @@ export class CloudinaryService {
     };
 
     const updateImgUrl = async (file: Express.Multer.File, id: string) => {
-      try {
-        const result = await uploadStream();
-        const product: Products = await this.productsService.getProductById(id);
+      const result = await uploadStream();
+      const product: Products = await this.productsService.getProductById(id);
 
-        if (!product) {
-          throw new Error('Producto no encontrado');
-        }
-
-        const updatedProduct = await this.productsService.updateProduct(id, {
-          description: product.description,
-          name: product.name,
-          price: product.price,
-          stock: product.stock,
-          imgUrl: result.secure_url,
-        });
-        console.log(result.secure_url);
-
-        return { message: ' actualizacion correcta', updatedProduct };
-      } catch (error) {
-        throw new Error(`Upload failed: ${error.message}`);
+      if (!product) {
+        throw new BadRequestException('Producto no encontrado');
       }
+
+      const updatedProduct = await this.productsService.updateProduct(id, {
+        description: product.description,
+        name: product.name,
+        price: product.price,
+        stock: product.stock,
+        imgUrl: result.secure_url,
+      });
+      console.log(result.secure_url);
+
+      return { message: ' actualizacion correcta', updatedProduct };
     };
 
     return updateImgUrl(file, id);

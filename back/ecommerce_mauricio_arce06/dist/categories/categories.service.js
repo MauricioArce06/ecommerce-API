@@ -25,23 +25,37 @@ let CategoriesService = class CategoriesService {
     async getCategories() {
         return await this.categoryService.find();
     }
+    async getCategoryById(id) {
+        const category = await this.categoryService.findOne({
+            where: { id },
+            relations: ['products'],
+        });
+        if (!category)
+            throw new common_1.BadRequestException("Category doesn't exist");
+        return category;
+    }
     async getCategoriesSeeder() {
-        const productos = JSON.parse((0, fs_1.readFileSync)('c:/Users/Mauri/Documents/Programacion/PM4-MauricioArce06/back/ecommerce_mauricio_arce06/src/utils/data.json', 'utf8'));
+        const productos = JSON.parse((0, fs_1.readFileSync)('./src/utils/data.json', 'utf8'));
         for (const product of productos) {
-            const ExistingCategory = await this.categoryService.findOne({
-                where: { name: product.category },
-            });
-            if (!ExistingCategory) {
-                const newCategory = await this.categoryService.create({
-                    name: product.category,
+            try {
+                const ExistingCategory = await this.categoryService.findOne({
+                    where: { name: product.category },
                 });
-                await this.categoryService.save(newCategory);
+                if (!ExistingCategory) {
+                    const newCategory = this.categoryService.create({
+                        name: product.category,
+                    });
+                    const savedCategory = await this.categoryService.save(newCategory);
+                    console.log(savedCategory);
+                }
+            }
+            catch (error) {
+                return 'Seeder already exists';
             }
         }
         return await this.categoryService.find();
     }
     async addCategory(category) {
-        console.log(category);
         const ExistingCategory = await this.categoryService.findOne({
             where: { name: category.name },
         });

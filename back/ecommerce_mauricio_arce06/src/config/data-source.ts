@@ -1,4 +1,4 @@
-import { DataSource, DataSourceOptions } from 'typeorm';
+import { DataSource, DataSourceOptions, MigrationExecutor } from 'typeorm';
 import { DB_HOST, DB_NAME, DB_PASSWORD, DB_PORT, DB_USERNAME } from './envCon';
 import { registerAs } from '@nestjs/config';
 
@@ -9,13 +9,14 @@ const AppDataSource = {
   username: DB_USERNAME,
   password: DB_PASSWORD,
   database: DB_NAME,
-  synchronize: true,
+  // synchronize: true,
   // logging: true,
-  dropSchema: true,
+  // dropSchema: true,
   entities: ['dist/**/*.entity{.ts,.js}'],
   migrations: ['dist/migrations/*{.ts,.js}'],
-  autoLoadEntities: true,
 };
+
+//* npm run migration:run
 
 export default registerAs('typeorm', () => AppDataSource);
 

@@ -4,7 +4,7 @@ export declare class ProductsController {
     private readonly productsService;
     constructor(productsService: ProductsService);
     getProducts(): Promise<import("../product.entity").Products[]>;
-    preLoadedProducts(): Promise<import("../product.entity").Products[]>;
+    preLoadedProducts(): Promise<import("../product.entity").Products[] | "Seeder ya hecho">;
     getProductById(id: string): Promise<import("../product.entity").Products>;
     postProduct(product: CreateProductsDto): Promise<import("../product.entity").Products | {
         message: string;

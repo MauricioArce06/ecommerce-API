@@ -102,6 +102,15 @@ __decorate([
     }),
     __metadata("design:type", String)
 ], CreateUserDto.prototype, "city", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsBoolean)(),
+    (0, swagger_1.ApiProperty)({
+        description: 'Este campo es opcional. Indica si el usuario es administrador o no. Por defecto es falso',
+        example: true,
+    }),
+    __metadata("design:type", Boolean)
+], CreateUserDto.prototype, "isAdmin", void 0);
 class LoginUserDto {
 }
 exports.LoginUserDto = LoginUserDto;

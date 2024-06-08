@@ -16,6 +16,6 @@ export class Categories {
   @Column({ type: 'varchar', length: 50 })
   name: string;
 
-  @OneToMany(() => Products, (product) => product.categories)
-  product: Products;
+  @OneToMany(() => Products, (product) => product.category)
+  products: Products;
 }

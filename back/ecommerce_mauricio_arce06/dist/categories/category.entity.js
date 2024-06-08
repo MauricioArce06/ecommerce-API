@@ -19,7 +19,7 @@ let Categories = class Categories {
         this.id = (0, uuid_1.v4)();
     }
     static _OPENAPI_METADATA_FACTORY() {
-        return { id: { required: true, type: () => String, default: (0, uuid_1.v4)() }, name: { required: true, type: () => String }, product: { required: true, type: () => require("../product/product.entity").Products } };
+        return { id: { required: true, type: () => String, default: (0, uuid_1.v4)() }, name: { required: true, type: () => String }, products: { required: true, type: () => require("../product/product.entity").Products } };
     }
 };
 exports.Categories = Categories;
@@ -32,9 +32,9 @@ __decorate([
     __metadata("design:type", String)
 ], Categories.prototype, "name", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => product_entity_1.Products, (product) => product.categories),
+    (0, typeorm_1.OneToMany)(() => product_entity_1.Products, (product) => product.category),
     __metadata("design:type", product_entity_1.Products)
-], Categories.prototype, "product", void 0);
+], Categories.prototype, "products", void 0);
 exports.Categories = Categories = __decorate([
     (0, typeorm_1.Entity)('categories')
 ], Categories);
