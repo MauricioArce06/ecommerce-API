@@ -8,6 +8,7 @@ const swagger_1 = require("@nestjs/swagger");
 const products_service_1 = require("./product/services/products.service");
 const categories_service_1 = require("./categories/categories.service");
 const console_1 = require("console");
+const data_source_1 = require("./config/data-source");
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     (0, console_1.log)('Iniciando...');
@@ -31,6 +32,7 @@ async function bootstrap() {
     const document = swagger_1.SwaggerModule.createDocument(app, swaggerConfig);
     swagger_1.SwaggerModule.setup('api', app, document);
     await app.listen(3000);
+    data_source_1.AppDataSource;
 }
 bootstrap();
 //# sourceMappingURL=main.js.map

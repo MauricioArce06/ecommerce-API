@@ -48,7 +48,7 @@ export class CategoriesService {
 
           const savedCategory = await this.categoryService.save(newCategory);
 
-          console.log(savedCategory);
+          savedCategory;
         }
       } catch (error) {
         return 'Seeder already exists';

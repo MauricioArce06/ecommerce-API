@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.connectionSource = void 0;
+exports.connectionSource = exports.AppDataSource = void 0;
 const typeorm_1 = require("typeorm");
 const envCon_1 = require("./envCon");
 const config_1 = require("@nestjs/config");
-const AppDataSource = {
+exports.AppDataSource = {
     type: 'postgres',
     host: envCon_1.DB_HOST,
     port: envCon_1.DB_PORT,
@@ -13,7 +13,9 @@ const AppDataSource = {
     database: envCon_1.DB_NAME,
     entities: ['dist/**/*.entity{.ts,.js}'],
     migrations: ['dist/migrations/*{.ts,.js}'],
+    migrationsTableName: 'custom_migration_table',
+    migrationsRun: true,
 };
-exports.default = (0, config_1.registerAs)('typeorm', () => AppDataSource);
-exports.connectionSource = new typeorm_1.DataSource(AppDataSource);
+exports.default = (0, config_1.registerAs)('typeorm', () => exports.AppDataSource);
+exports.connectionSource = new typeorm_1.DataSource(exports.AppDataSource);
 //# sourceMappingURL=data-source.js.map

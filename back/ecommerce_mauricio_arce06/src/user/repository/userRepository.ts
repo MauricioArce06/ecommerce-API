@@ -83,7 +83,7 @@ export class UserRepository {
   }
   async login(credentialDto: CredentialDto) {
     const { email, password } = credentialDto;
-    console.log('llega al login Service');
+    ('llega al login Service');
     try {
       const user = await this.usersRepository.findOne({
         where: { email: email },
@@ -99,7 +99,7 @@ export class UserRepository {
           isAdmin: true,
         },
       });
-      console.log(user);
+      user;
       if (!user) {
         throw new BadRequestException('Email or password are incorrect');
       } else {

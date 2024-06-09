@@ -44,6 +44,7 @@ let CloudinaryService = class CloudinaryService {
                 price: product.price,
                 stock: product.stock,
                 imgUrl: result.secure_url,
+                category: product.category,
             });
             console.log(result.secure_url);
             return { message: ' actualizacion correcta', updatedProduct };

@@ -6,6 +6,6 @@ export declare class CategoriesService {
     constructor(categoryService: Repository<Categories>);
     getCategories(): Promise<Categories[]>;
     getCategoryById(id: string): Promise<Categories>;
-    getCategoriesSeeder(): Promise<Categories[] | "Seeder already exists">;
+    getCategoriesSeeder(): Promise<"Seeder already exists" | Categories[]>;
     addCategory(category: CategoryDto): Promise<Categories>;
 }

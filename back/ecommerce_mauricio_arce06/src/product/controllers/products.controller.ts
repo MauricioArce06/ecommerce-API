@@ -41,7 +41,7 @@ export class ProductsController {
   @Post('post')
   @UseGuards(headerAuthorization)
   postProduct(@Body() product: CreateProductsDto) {
-    console.log('aca llega');
+    ('aca llega');
 
     return this.productsService.postProduct(product);
   }

@@ -39,8 +39,9 @@ export class CloudinaryService {
         price: product.price,
         stock: product.stock,
         imgUrl: result.secure_url,
+        category: product.category.name,
       });
-      console.log(result.secure_url);
+      result.secure_url;
 
       return { message: ' actualizacion correcta', updatedProduct };
     };

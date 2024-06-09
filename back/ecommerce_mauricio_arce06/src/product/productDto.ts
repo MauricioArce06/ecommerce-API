@@ -16,6 +16,7 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
+import { Categories } from 'src/categories/category.entity';
 
 export class CreateProductsDto {
   @IsString()
@@ -24,7 +25,7 @@ export class CreateProductsDto {
   @IsNotEmpty()
   @ApiProperty({
     description: 'Nombre del producto. Debe ser de 3 a 50 caracteres',
-    example: 'Coca Cola',
+    example: 'Samsumg Tablet',
   })
   name: string;
 
@@ -33,7 +34,7 @@ export class CreateProductsDto {
   @IsNotEmpty()
   @ApiProperty({
     description: 'Descripción del producto. Debe ser de 3 a 50 caracteres',
-    example: 'Botella de Coca Cola de 1L',
+    example: 'Tablet Samsung de 10 pulgadas',
   })
   description: string;
 
@@ -68,4 +69,12 @@ export class CreateProductsDto {
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuPG_UiU5N_bv03CJFww0jlpyW-dsYFHLRNg&s',
   })
   imgUrl: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @ApiProperty({
+    description: 'categoria del producto',
+    example: 'Bebida',
+  })
+  category: string;
 }

@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateProductsDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
+const category_entity_1 = require("../categories/category.entity");
 class CreateProductsDto {
 }
 exports.CreateProductsDto = CreateProductsDto;
@@ -22,7 +23,7 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, swagger_1.ApiProperty)({
         description: 'Nombre del producto. Debe ser de 3 a 50 caracteres',
-        example: 'Coca Cola',
+        example: 'Samsumg Tablet',
     }),
     __metadata("design:type", String)
 ], CreateProductsDto.prototype, "name", void 0);
@@ -32,7 +33,7 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, swagger_1.ApiProperty)({
         description: 'Descripción del producto. Debe ser de 3 a 50 caracteres',
-        example: 'Botella de Coca Cola de 1L',
+        example: 'Tablet Samsung de 10 pulgadas',
     }),
     __metadata("design:type", String)
 ], CreateProductsDto.prototype, "description", void 0);
@@ -70,4 +71,13 @@ __decorate([
     }),
     __metadata("design:type", String)
 ], CreateProductsDto.prototype, "imgUrl", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, swagger_1.ApiProperty)({
+        description: 'Categoría del producto. Debe ser de 3 a 50 caracteres',
+        example: 'Tablet',
+    }),
+    __metadata("design:type", category_entity_1.Categories)
+], CreateProductsDto.prototype, "category", void 0);
 //# sourceMappingURL=productDto.js.map

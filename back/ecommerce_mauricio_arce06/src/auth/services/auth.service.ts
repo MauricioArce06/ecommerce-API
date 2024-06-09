@@ -18,7 +18,7 @@ export class AuthService {
 
   async sing_up(user: CreateUserDto) {
     const { password, confirmPassword } = user;
-    console.log(user);
+    user;
 
     if (password) {
       if (password === confirmPassword) {
@@ -31,8 +31,6 @@ export class AuthService {
       }
     } else throw new BadRequestException('Password is required');
 
-    console.log('llega despues del hasheo');
-
     try {
       const userExists = await this.UserRepository.login({
         email: user.email,
@@ -42,7 +40,6 @@ export class AuthService {
         throw new BadRequestException('User already exists');
       }
     } catch (error) {
-      console.log('llega despues de verificar si existe el usuario');
       return this.UserRepository.postUser(user);
     }
   }
@@ -70,7 +67,6 @@ export class AuthService {
         email: user.email,
         roles: [user.isAdmin ? Role.Admin : Role.User],
       };
-      console.log(userPayload);
 
       const token = await this.jwtService.signAsync(userPayload);
       return { message: 'user logged in successfully', token };

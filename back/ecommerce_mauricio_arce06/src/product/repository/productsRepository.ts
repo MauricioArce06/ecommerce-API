@@ -18,11 +18,11 @@
 //   }
 
 //   async getProductById(id: string) {
-//     console.log(id);
+//      (id);
 //     const product = await this.productsRepository.findOne({ where: { id } });
 //     if (product) {
-//       console.log('El producto es:', product);
-//     } else console.log('El producto no existe');
+//        ('El producto es:', product);
+//     } else  ('El producto no existe');
 
 //     return product;
 //   }
@@ -41,7 +41,7 @@
 //       );
 //     } else return { message: 'El producto no existe' };
 
-//     // console.log(product);
+//     //  (product);
 //     // Object.assign(product, toUpdate);
 //     return product.id;
 //   }

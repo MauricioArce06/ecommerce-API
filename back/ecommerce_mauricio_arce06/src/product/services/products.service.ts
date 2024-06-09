@@ -28,13 +28,16 @@ export class ProductsService {
   }
 
   async getProductById(id: string) {
-    const producto = await this.productsRepository.findOne({ where: { id } });
+    const producto = await this.productsRepository.findOne({
+      where: { id },
+      relations: ['category'],
+    });
     if (!producto) throw new BadRequestException("Product doesn't exist");
     return producto;
   }
 
   async postProduct(product: CreateProductsDto) {
-    console.log('hasta aca llega');
+    ('hasta aca llega');
     const existingProduct = await this.productsRepository.findOne({
       where: { name: product.name },
     });
@@ -42,22 +45,33 @@ export class ProductsService {
       throw new ConflictException('Product already exists');
     }
 
-    try {
-      const newProduct = await this.productsRepository.create(product);
-      if (newProduct) {
-        const prodSaved = await this.productsRepository.save(newProduct);
-        console.log(prodSaved);
-        return prodSaved;
-      } else return { message: 'El prodcuto no se pudo crear' };
-    } catch (error) {
-      throw new InternalServerErrorException("Can't create product");
+    const category = await this.categoriesRepository.findOne({
+      where: { name: product.category },
+    });
+
+    if (!category) {
+      throw new BadRequestException("Category doesn't exist");
     }
+    const newProduct = await this.productsRepository.create({
+      ...product,
+      category,
+    });
+    if (newProduct) {
+      const prodSaved = await this.productsRepository.save(newProduct);
+      return await this.productsRepository.findOne({
+        where: { id: prodSaved.id },
+        relations: ['category'],
+      });
+    } else return { message: 'El prodcuto no se pudo crear' };
   }
 
   async updateProduct(id: string, toUpdate: CreateProductsDto) {
     const product = await this.productsRepository.findOne({ where: { id } });
+    const category = await this.categoriesRepository.findOne({
+      where: { name: toUpdate.category },
+    });
     if (product) {
-      await this.productsRepository.update(product, toUpdate);
+      await this.productsRepository.update(product, { ...toUpdate, category });
       return product.id;
     } else return { message: 'El producto no existe' };
   }
@@ -97,7 +111,7 @@ export class ProductsService {
           await this.productsRepository.save(preLoadedProduct);
         }
       } catch (error) {
-        console.log(error);
+        error;
       }
     }
     return await this.productsRepository.find();

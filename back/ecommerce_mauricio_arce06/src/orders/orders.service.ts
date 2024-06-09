@@ -66,14 +66,13 @@ export class OrdersService {
     const orderSaved = await this.ordersRepository.save(order);
 
     const ordersDetail = [];
-    console.log('ID DEL ORDER', order.id);
 
     orderSaved.date = Hoy;
     orderSaved.user_id = user;
 
     for (const producto of products) {
       const { id } = producto;
-      console.log(id);
+      id;
       try {
         const orderDetail = await this.ordersDetailService.addOrderDetail({
           product_id: id,
@@ -85,12 +84,12 @@ export class OrdersService {
         throw new BadRequestException(error.message);
       }
     }
-    console.log('orderSaved por actualizar');
+    ('orderSaved por actualizar');
 
     orderSaved.orderDetail = ordersDetail;
     orderSaved.total = total;
 
-    console.log('orderSaved actualizado');
+    ('orderSaved actualizado');
 
     const updatedOrder = await this.ordersRepository.save(orderSaved);
 

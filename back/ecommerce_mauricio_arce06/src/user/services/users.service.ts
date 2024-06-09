@@ -12,7 +12,7 @@ export class UsersService {
     return this.userRepository.getUserById(id);
   }
   async postUser(user: CreateUserDto) {
-    console.log('aca llega');
+    ('aca llega');
 
     return this.userRepository.postUser(user);
   }

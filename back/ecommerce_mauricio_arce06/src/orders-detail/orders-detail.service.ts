@@ -88,7 +88,7 @@ export class OrdersDetailService {
       select: ['id', 'price', 'order_id', 'product'],
     });
 
-    console.log(orderDetailCreated);
+    orderDetailCreated;
     return orderDetailCreated;
   }
 }
