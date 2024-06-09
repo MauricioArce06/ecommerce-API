@@ -73,8 +73,9 @@ export class CreateProductsDto {
   @IsNotEmpty()
   @IsString()
   @ApiProperty({
-    description: 'categoria del producto',
-    example: 'Bebida',
+    description:
+      'Categoria existente en la base de datos a la cual pertenezca el producto.',
+    example: 'Tablet',
   })
   category: string;
 }
