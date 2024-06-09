@@ -36,25 +36,20 @@ export class CategoriesService {
   async getCategoriesSeeder() {
     const productos = JSON.parse(readFileSync('./src/utils/data.json', 'utf8'));
     for (const product of productos) {
-      try {
-        const ExistingCategory = await this.categoryService.findOne({
-          where: { name: product.category },
+      const ExistingCategory = await this.categoryService.findOne({
+        where: { name: product.category },
+      });
+
+      if (!ExistingCategory) {
+        const newCategory = this.categoryService.create({
+          name: product.category,
         });
 
-        if (!ExistingCategory) {
-          const newCategory = this.categoryService.create({
-            name: product.category,
-          });
+        await this.categoryService.save(newCategory);
 
-          const savedCategory = await this.categoryService.save(newCategory);
-
-          savedCategory;
-        }
-      } catch (error) {
-        return 'Seeder already exists';
-      }
+        return await this.categoryService.find();
+      } else throw new ConflictException('Category already exists');
     }
-    return await this.categoryService.find();
   }
   async addCategory(category: CategoryDto) {
     const ExistingCategory = await this.categoryService.findOne({
