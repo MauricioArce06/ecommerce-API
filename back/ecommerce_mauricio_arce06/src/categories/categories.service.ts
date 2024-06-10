@@ -46,10 +46,9 @@ export class CategoriesService {
         });
 
         await this.categoryService.save(newCategory);
-
-        return await this.categoryService.find();
-      } else return 'Category Seeder already exists';
+      } else continue;
     }
+    return await this.categoryService.find();
   }
   async addCategory(category: CategoryDto) {
     const ExistingCategory = await this.categoryService.findOne({

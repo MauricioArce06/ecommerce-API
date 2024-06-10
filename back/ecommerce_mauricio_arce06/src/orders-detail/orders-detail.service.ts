@@ -65,7 +65,7 @@ export class OrdersDetailService {
     }
 
     if (product.stock <= 0) {
-      throw new Error('El producto no tiene stock');
+      throw new Error(`El producto ${product.name} no tiene stock`);
     }
     const newOrderDetail = new OrdersDetail();
 

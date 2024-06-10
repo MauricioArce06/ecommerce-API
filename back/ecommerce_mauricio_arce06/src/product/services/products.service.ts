@@ -37,7 +37,6 @@ export class ProductsService {
   }
 
   async postProduct(product: CreateProductsDto) {
-    ('hasta aca llega');
     const existingProduct = await this.productsRepository.findOne({
       where: { name: product.name },
     });
@@ -79,7 +78,12 @@ export class ProductsService {
   async deleteProduct(id: string) {
     const user = await this.productsRepository.findOne({ where: { id } });
     if (user) {
-      return this.productsRepository.delete(user);
+      try {
+        await this.productsRepository.delete(user);
+        return 'Producto eliminado con éxito';
+      } catch (error) {
+        throw new InternalServerErrorException();
+      }
     } else return { message: 'El producto no existe' };
   }
 

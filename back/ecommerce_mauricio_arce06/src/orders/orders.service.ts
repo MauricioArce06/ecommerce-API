@@ -47,6 +47,9 @@ export class OrdersService {
       },
     });
 
+    if (!order) {
+      throw new BadRequestException('Order not found');
+    }
     return order;
   }
 
@@ -89,19 +92,21 @@ export class OrdersService {
     orderSaved.orderDetail = ordersDetail;
     orderSaved.total = total;
 
-    ('orderSaved actualizado');
-
     const updatedOrder = await this.ordersRepository.save(orderSaved);
 
     return await this.ordersRepository.findOne({
       where: { id: orderSaved.id },
-      relations: ['orderDetail'],
+      relations: ['orderDetail', 'orderDetail.product'],
       select: {
         id: true,
         date: true,
         total: true,
         orderDetail: {
           id: true,
+          product: {
+            id: false,
+            name: true,
+          },
         },
       },
     });
