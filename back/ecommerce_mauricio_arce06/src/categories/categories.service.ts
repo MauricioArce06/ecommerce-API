@@ -48,7 +48,7 @@ export class CategoriesService {
         await this.categoryService.save(newCategory);
 
         return await this.categoryService.find();
-      } else throw new ConflictException('Category already exists');
+      } else return 'Category Seeder already exists';
     }
   }
   async addCategory(category: CategoryDto) {
